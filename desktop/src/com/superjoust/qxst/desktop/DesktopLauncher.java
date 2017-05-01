@@ -1,8 +1,8 @@
-package com.superjoust.qxstudios.desktop;
+package com.superjoust.qxst.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.superjoust.qxstudios.Game;
+import com.superjoust.qxst.Game;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
