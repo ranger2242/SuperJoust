@@ -29,15 +29,6 @@ public class Rectangle extends com.badlogic.gdx.math.Rectangle {
     public Vector2 rotatePoint(Vector2 point, Vector2 axis, float ang){
         float x= (float) ((point.x-axis.x)*Math.cos(ang)-(point.y-axis.y)*Math.sin(ang)+axis.x);
         float y= (float) ((point.y-axis.y)*Math.cos(ang)+(point.x-axis.x)*Math.sin(ang)+axis.y);
-/*
-        float tempX = point.x - axis.x;
-        float tempY = point.x - axis.x;
-// now apply rotation
-        float rotatedX = (float) (tempX*Math.cos(ang) - tempY*Math.sin(ang));
-        float rotatedY = (float) (tempX*Math.sin(ang) + tempY*Math.cos(ang));
-// translate back
-        float x = rotatedX + axis.x;
-        float y = rotatedY + axis.y;*/
         return new Vector2(x,y);
     }
     public float[] getVerts(){

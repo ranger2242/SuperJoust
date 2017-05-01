@@ -1,6 +1,7 @@
 package com.superjoust.qxst.shapes;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
@@ -9,11 +10,20 @@ import java.util.ArrayList;
  */
 public class Triangle {
     float[] points= new float[6];
+    Vector2 center=new Vector2();
     public Triangle(){
         this(new float[]{0,0,0,0,0,0});
     }
     public Triangle(float[] p){
         points=p;
+    }
+    public Triangle(Vector2 ctr, float l){
+        center.set(ctr);
+        points=new float[]{ctr.x-l/2,ctr.y+l/2,ctr.x+l/2,ctr.y+l/2,ctr.x,ctr.y-l/2};
+    }
+    public void translate(Vector2 ctr, float l){
+        center.set(ctr);
+        points=new float[]{ctr.x-l/2,ctr.y+l/2,ctr.x+l/2,ctr.y+l/2,ctr.x,ctr.y-l/2};
     }
     public float[] getPoints(){
         return points;
