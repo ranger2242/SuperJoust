@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Game extends ApplicationAdapter {
+
 	SpriteBatch batch;
 	ShapeRendererExt sr ;
 	GameStateManager gsm = new GameStateManager();

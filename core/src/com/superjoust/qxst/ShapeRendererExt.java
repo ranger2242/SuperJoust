@@ -5,8 +5,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.superjoust.qxst.shapes.Line;
 import com.superjoust.qxst.shapes.Triangle;
 
-
-
 /**
  * Created by Chris Cavazos on 1/21/2017.
  */
