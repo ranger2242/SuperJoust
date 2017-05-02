@@ -12,6 +12,7 @@ import java.util.Queue;
  */
 public class Player {
     protected int lives=0;
+    protected int numLevel;
     protected Vector2 position=new Vector2(0,0);
     protected Vector2 velocity=new Vector2(0,0);
     protected Vector2 accel=new Vector2(0,0);
@@ -27,6 +28,7 @@ public class Player {
         changePos(new Vector2(300,300));
         lives = 5;
         score = 0;
+        numLevel =1;
 
 
     }

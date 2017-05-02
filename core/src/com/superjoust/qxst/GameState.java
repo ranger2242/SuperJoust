@@ -14,8 +14,8 @@ import static com.superjoust.qxst.Game.player1;
  * Created by Chris Cavazos on 5/1/2017.
  */
 public class GameState extends State {
-    Level lvl1 = new Level();
 
+    LevelBuilder builder = new LevelBuilder();
     protected GameState(GameStateManager gsm) {
         super(gsm);
         createPlatforms();
@@ -24,9 +24,8 @@ public class GameState extends State {
     }
 
     void createPlatforms() {
-        lvl1.addPlatform(new Platform(400, 200, 300, 15, 45));
-        lvl1.addPlatform(new Platform(300, 10, 300, 15, 0));
-        lvl1.addPlatform(new Platform(0, 400, 300, 15, 0));
+        builder.build();
+
     }
     @Override
     public void handleInput() {
@@ -53,8 +52,8 @@ public class GameState extends State {
     public void render(SpriteBatch sb, ShapeRendererExt sr) {
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(Color.WHITE);
-        lvl1.drawList(sr);
         sr.triangle(player1.getShape());
+        builder.levels.get(0).drawList(sr);
         sr.end();
     }
 
