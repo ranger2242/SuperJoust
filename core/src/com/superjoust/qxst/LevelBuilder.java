@@ -19,9 +19,7 @@ public class LevelBuilder {
             count++;
         }
     }
-    public void nextLevel(){
 
-    }
 
     public Level level1(){
         Level lvl1=new Level();
@@ -37,9 +35,15 @@ public class LevelBuilder {
     public Level level2(){
         Level lvl2=new Level();
 
-        lvl2.addPlatform(new Platform(400, 200, 300, 15, 35));
-        lvl2.addPlatform(new Platform(300, 10, 300, 15, 77));
-        lvl2.addPlatform(new Platform(0, 400, 300, 15, -9992));
+        lvl2.addPlatform(new Platform(0,0,1800,20,0));
+        lvl2.addPlatform(new Platform(0,100,300,10,0));
+        lvl2.addPlatform(new Platform(0,250,300,10,0));
+        lvl2.addPlatform(new Platform(0,400,300,10,0));
+
+        lvl2.addPlatform(new Platform(600,200,300,10,0));
+        lvl2.addPlatform(new Platform(600,300,300,10,0));
+        lvl2.addPlatform(new Platform(600,100,300,10,0));
+        lvl2.addPlatform(new Platform(600,400,300,10,0));
 
         levels.add(lvl2);
         return  lvl2;

@@ -1,10 +1,11 @@
 package com.superjoust.qxst;
 
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.superjoust.qxst.commands.Command;
-import com.superjoust.qxst.shapes.Line;
-import com.superjoust.qxst.shapes.Rectangle;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -12,21 +13,44 @@ import java.util.Queue;
  * Created by Dago on 5/1/2017.
  */
 public class Player {
+
+
     protected int lives=0;
     protected int level;
     protected Vector2 position=new Vector2(0,0);
     protected Vector2 velocity=new Vector2(0,0);
     protected Vector2 accel=new Vector2(0,0);
-    protected Rectangle shape=new Rectangle();
+    protected PolygonShape shape;
     protected long score=0;
     protected int width = 30;
 
+
+    Body player=null;
+    BodyDef playerDef=new BodyDef();
+    FixtureDef fixtureDef = new FixtureDef();
+
     Queue<Command> commands = new LinkedList<>();
+
+
+
+
     public Player(){
-        onStart();
-       // shape=new Rectangle(position.x,position.y,width,width,0);
+       // onStart();
+
     }
+
+
+
     public void onStart(){
+        playerDef.type=BodyDef.BodyType.DynamicBody;
+        playerDef.position.set(getPosition());
+        shape=new PolygonShape();
+
+        shape.setAsBox(10,10);
+        fixtureDef.shape= shape;
+        player= GameState.getWorld().createBody(playerDef);
+        player.createFixture(fixtureDef);
+
         changePos(new Vector2(300,300));
 
         lives = 5;
@@ -40,14 +64,13 @@ public class Player {
     }
     public void changePos(Vector2 v){
        position.set(v);
-       shape.translate(v);
     }
     public void move(){
         velocity.add(accel);
         velocity.add(0,-Game.GRAVITY);
         capVelocity(6);
         position.add(velocity);
-        shape.translate(position);
+
     }
     void wrapPlayer(){
         if(position.x<0){
@@ -75,15 +98,14 @@ public class Player {
         float wind=.05f;
         accel.set(accel.x*wind,accel.y*wind);
     }
-    void onLevelStart(){
 
-    }
     void collisionHandler(){
+        /*
         ArrayList<Line> surfaces = new ArrayList<>();
         for(Platform p: GameState.builder.levels.get(level-1).platforms){
             surfaces.addAll(Line.asLines(p.getDimm()));
         }
-        ArrayList<Line> playerLines=Line.asLines(shape);
+        ArrayList<Line> playerLines=Line.asLines();
         boolean flip=false;
         int ind=-1;
         for(Line l: playerLines){
@@ -105,8 +127,9 @@ public class Player {
                 velocity.set((float) (mag * Math.cos(ang)), (float) (mag * Math.sin(ang)));
                 dtFlipVelocity=0;
             }
-            //velocity.set(velocity.x*-1,velocity.y*-1);
+
         }
+        */
     }
     float thetaMin(float m1, float m2){
         float a= (float) Math.atan((m1-m2)/(1+m1*m2));
@@ -121,9 +144,8 @@ public class Player {
         for(Command c:commands){
             c.execute();
         }
-       // System.out.println(position.toString()+" _ "+velocity.toString()+" _ "+accel.toString());
-        move();
-        collisionHandler();
+
+        //collisionHandler();
         wrapPlayer();
         capVelocity(6);
         commands.clear();
@@ -132,13 +154,10 @@ public class Player {
         accel.add(acc);
    }
 
-    public Rectangle getShape() {
+    public PolygonShape getShape() {
         return shape;
     }
 
-    public void addVelocity(Vector2 v) {
-       velocity.add(v);
-    }
 
     public void addPosition(Vector2 v) {
        position.add(v);
@@ -152,6 +171,29 @@ public class Player {
     }
 
     public Vector2 getPosition() {
+
         return position;
     }
+    public void addVelocity(Vector2 v){
+        velocity.add(v);
+    }
+    public Vector2 scaleWorldToPixel(Vector2 v){
+        Vector2 x = new Vector2();
+        x.x=50*v.x;
+        x.y=50*v.y;
+
+
+        return x;
+
+
+    }
+    public Vector2 scalePixelToWorld(Vector2 v){
+        Vector2 x = new Vector2();
+        x.x=v.x/50;
+        x.y=v.y/50;
+
+
+        return x;
+    }
+
 }

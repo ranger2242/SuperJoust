@@ -4,71 +4,90 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
+
 import com.superjoust.qxst.commands.FlapComm;
 import com.superjoust.qxst.commands.LeftComm;
 import com.superjoust.qxst.commands.RightComm;
 
 import static com.superjoust.qxst.Game.player1;
 
+
 /**
  * Created by Chris Cavazos on 5/1/2017.
  */
 public class GameState extends State {
-    float dtSwap=0;
+    float dtSwap = 0;
     static LevelBuilder builder = new LevelBuilder();
-    World world;
-    Box2DDebugRenderer b2dr;
+
+    static World world;
+    Box2DDebugRenderer box2DDebugRenderer;
+
+    public static World getWorld() {
+        return world;
+    }
+
     protected GameState(GameStateManager gsm) {
         super(gsm);
         createPlatforms();
-        player1.onLevelStart();
-        b2dr= new Box2DDebugRenderer();
-        world= new World(new Vector2(0,9.81f),true);
+        createBox2DWorld();
+        player1.onStart();
 
-        BodyDef bodyDef= new BodyDef();
-        Body body=null;
-        FixtureDef fdef=new FixtureDef();
+        /*BodyDef bodyDef = new BodyDef();
+        Body body = null;
+        FixtureDef fixtureDef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+
+        //create body
         bodyDef.position.set(player1.getPosition());
-        bodyDef.type= BodyDef.BodyType.DynamicBody;
-        body=world.createBody(bodyDef);
-        PolygonShape shape= new PolygonShape();
-        shape.setAsBox(15,15);
-        fdef.shape=shape;
-        body.createFixture(fdef);
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        body = world.createBody(bodyDef);
 
 
-        bodyDef.position.set(200,400);
-        bodyDef.type= BodyDef.BodyType.StaticBody;
-        body=world.createBody(bodyDef);
-        shape= new PolygonShape();
-        shape.setAsBox(100,5);
-        fdef.shape=shape;
-        body.createFixture(fdef);
+        //set shape
+        shape.setAsBox(10, 10);
+        fixtureDef.shape = shape;
+        body.createFixture(fixtureDef);
+
+// platform
+        bodyDef.position.set(200, 400);
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        body = world.createBody(bodyDef);
+        shape = new PolygonShape();
+        shape.setAsBox(100, 5);
+        fixtureDef.shape = shape;
+        body.createFixture(fixtureDef);*/
     }
+
+    void createBox2DWorld() {
+        box2DDebugRenderer = new Box2DDebugRenderer();
+        world = new World(new Vector2(0, 9.81f), true);
+    }
+
 
     void createPlatforms() {
         builder.build();
 
     }
+
     @Override
     public void handleInput() {
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player1.queueComm(new FlapComm());
         }
-       // if(Logic.xor(Gdx.input.isButtonPressed(Input.Keys.LEFT),Gdx.input.isButtonPressed(Input.Keys.RIGHT))) {
-            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                player1.queueComm(new LeftComm());
+        // if(Logic.xor(Gdx.input.isButtonPressed(Input.Keys.LEFT),Gdx.input.isButtonPressed(Input.Keys.RIGHT))) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            player1.queueComm(new LeftComm());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player1.queueComm(new RightComm());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
+            if (dtSwap > .5f) {
+                player1.addLevel();
+                dtSwap = 0;
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.D)){
-                player1.queueComm(new RightComm());
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.F1)){
-                if(dtSwap>.5f){
-                    player1.addLevel();
-                    dtSwap=0;
-                }
 
-            }
+        }
         //}
     }
 
@@ -76,14 +95,13 @@ public class GameState extends State {
     public void update(float dt) {
         handleInput();
         player1.update(dt);
-        dtSwap+=dt;
-        world.step(dt,6,2);
+        dtSwap += dt;
+        world.step(dt, 6, 2);
     }
 
     @Override
     public void render(SpriteBatch sb, ShapeRendererExt sr) {
-        ;
-        b2dr.render(world,cam.combined);
+        box2DDebugRenderer.render(world, cam.combined);
         /*
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(Color.WHITE);

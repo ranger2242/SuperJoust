@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Game extends ApplicationAdapter {
 	public static Player player1= new Player();
+	public static Enemy testEnemy = new Enemy();
 	SpriteBatch batch;
 	ShapeRendererExt sr ;
 	GameStateManager gsm = new GameStateManager();
@@ -22,7 +23,7 @@ public class Game extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		sr= new ShapeRendererExt();
 		gsm.push(new GameState(gsm));
-		player1.onStart();
+		//player1.onStart();
 
 	}
 
