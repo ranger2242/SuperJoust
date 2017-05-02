@@ -20,13 +20,15 @@ public class Player {
     protected Rectangle shape=new Rectangle();
     protected long score=0;
     protected int width = 30;
+
     Queue<Command> commands = new LinkedList<>();
     public Player(){
         onStart();
-        shape=new Rectangle(position.x,position.y,width,width,0);
+       // shape=new Rectangle(position.x,position.y,width,width,0);
     }
     public void onStart(){
         changePos(new Vector2(300,300));
+
         lives = 5;
         score = 0;
         level =1;
@@ -147,5 +149,9 @@ public class Player {
     }
     public void addLevel(){
        level++;
+    }
+
+    public Vector2 getPosition() {
+        return position;
     }
 }
