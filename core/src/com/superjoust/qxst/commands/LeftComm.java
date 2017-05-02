@@ -15,6 +15,6 @@ public class LeftComm extends Command {
 
     @Override
     public void execute() {
-        player1.addAcceleration(new Vector2(-.08f,0));
+        player1.move(new Vector2(-3,0));
     }
 }

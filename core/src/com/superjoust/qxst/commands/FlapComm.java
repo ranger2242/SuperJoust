@@ -14,7 +14,6 @@ public class FlapComm extends Command {
     }
     @Override
     public void execute() {
-        player1.addPosition(new Vector2(0,1));
-        player1.addVelocity(new Vector2(0,.275f));
+        player1.move(new Vector2(0,-50));
     }
 }

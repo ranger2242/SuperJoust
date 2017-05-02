@@ -26,6 +26,18 @@ public class Game extends ApplicationAdapter {
 		//player1.onStart();
 
 	}
+	public static Vector2 SPIXEL(Vector2 v){
+		Vector2 x = new Vector2();
+		x.x=50*v.x;
+		x.y=50*v.y;
+		return x;
+	}
+	public static Vector2 SWORLD(Vector2 v){
+		Vector2 x = new Vector2();
+		x.x=v.x/50;
+		x.y=v.y/50;
+		return x;
+	}
 
 	@Override
 	public void render () {

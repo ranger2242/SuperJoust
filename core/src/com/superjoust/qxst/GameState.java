@@ -74,7 +74,6 @@ public class GameState extends State {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player1.queueComm(new FlapComm());
         }
-        // if(Logic.xor(Gdx.input.isButtonPressed(Input.Keys.LEFT),Gdx.input.isButtonPressed(Input.Keys.RIGHT))) {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player1.queueComm(new LeftComm());
         }
@@ -86,9 +85,7 @@ public class GameState extends State {
                 player1.addLevel();
                 dtSwap = 0;
             }
-
         }
-        //}
     }
 
     @Override

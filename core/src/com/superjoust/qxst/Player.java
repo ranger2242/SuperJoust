@@ -24,22 +24,16 @@ public class Player {
     protected long score=0;
     protected int width = 30;
 
-
-    Body player=null;
+    Body body =null;
     BodyDef playerDef=new BodyDef();
     FixtureDef fixtureDef = new FixtureDef();
 
     Queue<Command> commands = new LinkedList<>();
 
-
-
-
     public Player(){
        // onStart();
 
     }
-
-
 
     public void onStart(){
         playerDef.type=BodyDef.BodyType.DynamicBody;
@@ -48,8 +42,8 @@ public class Player {
 
         shape.setAsBox(10,10);
         fixtureDef.shape= shape;
-        player= GameState.getWorld().createBody(playerDef);
-        player.createFixture(fixtureDef);
+        body = GameState.getWorld().createBody(playerDef);
+        body.createFixture(fixtureDef);
 
         changePos(new Vector2(300,300));
 
@@ -65,12 +59,9 @@ public class Player {
     public void changePos(Vector2 v){
        position.set(v);
     }
-    public void move(){
-        velocity.add(accel);
-        velocity.add(0,-Game.GRAVITY);
+    public void move(Vector2 vector2){
+        body.applyForceToCenter(vector2,true);
         capVelocity(6);
-        position.add(velocity);
-
     }
     void wrapPlayer(){
         if(position.x<0){
@@ -171,29 +162,10 @@ public class Player {
     }
 
     public Vector2 getPosition() {
-
         return position;
     }
     public void addVelocity(Vector2 v){
         velocity.add(v);
-    }
-    public Vector2 scaleWorldToPixel(Vector2 v){
-        Vector2 x = new Vector2();
-        x.x=50*v.x;
-        x.y=50*v.y;
-
-
-        return x;
-
-
-    }
-    public Vector2 scalePixelToWorld(Vector2 v){
-        Vector2 x = new Vector2();
-        x.x=v.x/50;
-        x.y=v.y/50;
-
-
-        return x;
     }
 
 }
