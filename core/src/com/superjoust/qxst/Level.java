@@ -8,42 +8,43 @@ import java.util.Arrays;
  */
 public class Level {
     ArrayList<Platform> platforms = new ArrayList<>();
-    ArrayList<Spawn> spawners= new ArrayList<>();
+    ArrayList<Spawn> spawners = new ArrayList<>();
     ArrayList<Enemy> enemies = new ArrayList<>();
     int levelNum;
-    public Level(int levelNum,ArrayList<Platform> platforms,ArrayList<Enemy> enemies,ArrayList<Spawn> spawners){
-        this.levelNum=levelNum;
+
+    public Level(int levelNum, ArrayList<Platform> platforms, ArrayList<Enemy> enemies, ArrayList<Spawn> spawners) {
+        this.levelNum = levelNum;
         this.spawners = spawners;
-        this.enemies=enemies;
-        this.platforms= platforms;
+        this.enemies = enemies;
+        this.platforms = platforms;
     }
-    public Level(){}
 
+    public Level() {
+    }
 
-    public void clearPlatformList(){
+    public void clearSpawnerList() {spawners.clear();}
+    public void clearPlatformList() {
         platforms.clear();
     }
+    public void clearEnemiesList() {enemies.clear();}
 
-    public void deletePlatfrom(int ind){
-        platforms.remove(ind);
-    }
-    public void  clearSpawnerList(){
-        spawners.clear();
+    public void deleteSpawn(int ind) {spawners.remove(ind);}
+    public void deletePlatfrom(int ind) {platforms.remove(ind);}
+    public void deleteEnemy(int ind) {enemies.remove(ind);}
+
+    public void addSpawner(Spawn s) {spawners.add(s);}
+    public void addPlatform(Platform p) {platforms.add(p);}
+    public void addEnemies(Enemy e) {enemies.add(e);}
+    public void draw(ShapeRendererExt sr){
+        drawList(sr);
     }
 
-    public void deleteSpawn(int ind){
-        spawners.remove(ind);
-    }
 
-    public void drawList(ShapeRendererExt sr){
-        for(Platform p: platforms){
+    public void drawList(ShapeRendererExt sr) {
+        for (Platform p : platforms) {
             p.draw(sr);
         }
     }
-    public void addPlatform(Platform p){
-        platforms.add(p);
-    }
-
 
 
 }

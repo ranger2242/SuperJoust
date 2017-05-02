@@ -97,4 +97,11 @@ public class Player {
     public void addPosition(Vector2 v) {
        position.add(v);
     }
+
+    public int getLevel() {
+       return numLevel;
+    }
+    public void addLevel(){
+       numLevel++;
+    }
 }

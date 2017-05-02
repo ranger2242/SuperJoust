@@ -15,7 +15,7 @@ import static com.superjoust.qxst.Game.player1;
  * Created by Chris Cavazos on 5/1/2017.
  */
 public class GameState extends State {
-
+    float dtSwap=0;
     LevelBuilder builder = new LevelBuilder();
     protected GameState(GameStateManager gsm) {
         super(gsm);
@@ -40,6 +40,13 @@ public class GameState extends State {
             if(Gdx.input.isKeyPressed(Input.Keys.D)){
                 player1.queueComm(new RightComm());
             }
+            if(Gdx.input.isKeyPressed(Input.Keys.F1)){
+                if(dtSwap>.5f){
+                    player1.addLevel();
+                    dtSwap=0;
+                }
+
+            }
         //}
     }
 
@@ -47,6 +54,8 @@ public class GameState extends State {
     public void update(float dt) {
         handleInput();
         player1.update(dt);
+        dtSwap+=dt;
+
     }
 
     @Override
@@ -54,7 +63,7 @@ public class GameState extends State {
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(Color.WHITE);
         sr.triangle(player1.getShape());
-        builder.levels.get(0).drawList(sr);
+        builder.levels.get(player1.getLevel()-1).draw(sr);
         sr.end();
     }
 
