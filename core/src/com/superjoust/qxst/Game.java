@@ -13,7 +13,7 @@ public class Game extends ApplicationAdapter {
 
 	public static int WIDTH=0;
 	public static int HEIGHT=0;
-
+	public static float GRAVITY=.085f;
 
 	@Override
 	public void create () {

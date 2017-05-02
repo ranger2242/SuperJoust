@@ -7,13 +7,13 @@ import static com.superjoust.qxst.Game.player1;
 /**
  * Created by Chris Cavazos on 5/1/2017.
  */
-public class LeftComm extends Command {
-    public LeftComm(){
+public class FlapComm extends Command {
+    public FlapComm(){
 
     }
-
     @Override
     public void execute() {
-        player1.addAcceleration(new Vector2(-.08f,0));
+        player1.addPosition(new Vector2(0,1));
+        player1.addVelocity(new Vector2(0,.275f));
     }
 }

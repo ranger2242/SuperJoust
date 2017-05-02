@@ -41,7 +41,8 @@ public class Player {
     }
     public void move(){
         velocity.add(accel);
-        capVelocity(5);
+        velocity.add(0,-Game.GRAVITY);
+        capVelocity(6);
         position.add(velocity);
         shape.translate(position);
     }
@@ -52,26 +53,33 @@ public class Player {
         if(position.x>Game.WIDTH){
             position.x=0;
         }
+        if(position.y<0)position.y=1;
+        if(position.y>Game.HEIGHT) {
+            position.y = Game.HEIGHT - 1;
+            velocity.y=-velocity.y;
+        }
+
     }
     void capVelocity(int max){
-        if(velocity.x>max)
-            velocity.x=max;
-        if(velocity.x<-max)
-            velocity.x=-max;
-        if(velocity.y>max)
-            velocity.y=max;
-        if(accel.x>.5)accel.x=.5f;
-        if(accel.x<-.5)accel.x=-.5f;
-
+        if(velocity.x>max) velocity.x=max;
+        if(velocity.x<-max) velocity.x=-max;
+        if(velocity.y<(float)-(max)*3/4) velocity.y=(float) (-max)*3/4;
+        if(accel.x>.2)accel.x=.2f;
+        if(accel.x<-.2)accel.x=-.2f;
+        if((int)position.y==1){
+            velocity.y=0;
+        }
+        float wind=.05f;
+        accel.set(accel.x*wind,accel.y*wind);
     }
     public void update(float dt){
         for(Command c:commands){
             c.execute();
         }
-        System.out.println(position.toString()+" _ "+velocity.toString()+" _ "+accel.toString());
+       // System.out.println(position.toString()+" _ "+velocity.toString()+" _ "+accel.toString());
         move();
         wrapPlayer();
-        capVelocity(5);
+        capVelocity(6);
         commands.clear();
     }
    public void addAcceleration(Vector2 acc){
@@ -80,5 +88,13 @@ public class Player {
 
     public Triangle getShape() {
         return shape;
+    }
+
+    public void addVelocity(Vector2 v) {
+       velocity.add(v);
+    }
+
+    public void addPosition(Vector2 v) {
+       position.add(v);
     }
 }

@@ -14,6 +14,6 @@ public class RightComm extends Command {
 
     @Override
     public void execute() {
-        player1.addAcceleration(new Vector2(.007f,0));
+        player1.addAcceleration(new Vector2(.08f,0));
     }
 }

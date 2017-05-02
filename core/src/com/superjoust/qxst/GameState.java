@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.superjoust.qxst.commands.FlapComm;
 import com.superjoust.qxst.commands.LeftComm;
 import com.superjoust.qxst.commands.RightComm;
 
@@ -29,8 +30,8 @@ public class GameState extends State {
     }
     @Override
     public void handleInput() {
-        if(Gdx.input.isButtonPressed(Input.Keys.SPACE)){
-
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            player1.queueComm(new FlapComm());
         }
        // if(Logic.xor(Gdx.input.isButtonPressed(Input.Keys.LEFT),Gdx.input.isButtonPressed(Input.Keys.RIGHT))) {
             if (Gdx.input.isKeyPressed(Input.Keys.A)) {
