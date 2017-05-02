@@ -7,15 +7,32 @@ import com.superjoust.qxst.shapes.Triangle;
  * Created by Dago on 5/1/2017.
  */
 public class Player {
-    int lives;
-    Vector2 position;
-    Vector2 velocity;
-    Vector2 accel;
-    Triangle shape;
-    long score;
+   protected int lives;
+   protected Vector2 position;
+    protected Vector2 velocity;
+    protected Vector2 accel;
+    protected Triangle shape;
+    protected long score;
+    protected int width=30;
     public Player(){
-        lives = 5;
+
 
     }
+    public void onStart(){
+        changePos(new Vector2(300,300));
+        lives = 5;
+        score = 0;
+
+
+    }
+    public void changePos(Vector2 v){
+       position.set(v);
+       shape.translate(v);
+    }
+    public void move(){
+
+    }
+
+
 
 }
