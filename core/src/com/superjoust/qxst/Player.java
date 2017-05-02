@@ -1,9 +1,10 @@
 package com.superjoust.qxst;
 
-import com.badlogic.gdx.math.Vector2;
 import com.superjoust.qxst.commands.Command;
-import com.superjoust.qxst.shapes.Triangle;
+import com.superjoust.qxst.shapes.Line;
+import com.superjoust.qxst.shapes.Rectangle;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -12,23 +13,23 @@ import java.util.Queue;
  */
 public class Player {
     protected int lives=0;
-    protected int numLevel;
+    protected int level;
     protected Vector2 position=new Vector2(0,0);
     protected Vector2 velocity=new Vector2(0,0);
     protected Vector2 accel=new Vector2(0,0);
-    protected Triangle shape=new Triangle();
+    protected Rectangle shape=new Rectangle();
     protected long score=0;
     protected int width = 30;
     Queue<Command> commands = new LinkedList<>();
     public Player(){
         onStart();
-        shape=new Triangle(position,width);
+        shape=new Rectangle(position.x,position.y,width,width,0);
     }
     public void onStart(){
         changePos(new Vector2(300,300));
         lives = 5;
         score = 0;
-        numLevel =1;
+        level =1;
 
 
     }
@@ -72,12 +73,55 @@ public class Player {
         float wind=.05f;
         accel.set(accel.x*wind,accel.y*wind);
     }
+    void onLevelStart(){
+
+    }
+    void collisionHandler(){
+        ArrayList<Line> surfaces = new ArrayList<>();
+        for(Platform p: GameState.builder.levels.get(level-1).platforms){
+            surfaces.addAll(Line.asLines(p.getDimm()));
+        }
+        ArrayList<Line> playerLines=Line.asLines(shape);
+        boolean flip=false;
+        int ind=-1;
+        for(Line l: playerLines){
+            for(Line l2: surfaces) {
+               if(Line.intersectsLine(l,l2)){
+                   flip=true;
+                   ind=surfaces.indexOf(l2);
+               }
+            }
+        }
+        if(flip){
+            Line vel = new Line(new Vector2(0,0),new Vector2(velocity.x,velocity.y));
+            float m1= surfaces.get(ind).getAngle();
+            float m2= vel.getAngle();
+            float ang= (float) Math.toRadians( 180-vel.getAngle());
+
+            float mag= (float) EMath.pathag(vel.a,vel.b);
+            if(dtFlipVelocity>.04) {
+                velocity.set((float) (mag * Math.cos(ang)), (float) (mag * Math.sin(ang)));
+                dtFlipVelocity=0;
+            }
+            //velocity.set(velocity.x*-1,velocity.y*-1);
+        }
+    }
+    float thetaMin(float m1, float m2){
+        float a= (float) Math.atan((m1-m2)/(1+m1*m2));
+        float b= (float) Math.atan(-(m1-m2)/(1+m1*m2));
+        if(a>b)
+            return a;
+        else return b;
+    }
+    float dtFlipVelocity=0;
     public void update(float dt){
+        dtFlipVelocity+=dt;
         for(Command c:commands){
             c.execute();
         }
        // System.out.println(position.toString()+" _ "+velocity.toString()+" _ "+accel.toString());
         move();
+        collisionHandler();
         wrapPlayer();
         capVelocity(6);
         commands.clear();
@@ -86,7 +130,7 @@ public class Player {
         accel.add(acc);
    }
 
-    public Triangle getShape() {
+    public Rectangle getShape() {
         return shape;
     }
 
@@ -99,9 +143,9 @@ public class Player {
     }
 
     public int getLevel() {
-       return numLevel;
+       return level;
     }
     public void addLevel(){
-       numLevel++;
+       level++;
     }
 }

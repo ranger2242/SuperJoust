@@ -1,6 +1,7 @@
 package com.superjoust.qxst.commands;
 
-import com.badlogic.gdx.math.Vector2;
+
+import com.superjoust.qxst.Vector2;
 
 import static com.superjoust.qxst.Game.player1;
 

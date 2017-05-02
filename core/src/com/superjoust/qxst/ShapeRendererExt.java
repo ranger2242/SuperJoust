@@ -1,8 +1,8 @@
 package com.superjoust.qxst;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.superjoust.qxst.shapes.Line;
+import com.superjoust.qxst.shapes.Rectangle;
 import com.superjoust.qxst.shapes.Triangle;
 
 /**
@@ -11,7 +11,7 @@ import com.superjoust.qxst.shapes.Triangle;
 public class ShapeRendererExt extends ShapeRenderer {
 
     public void rect(Rectangle r) {
-        rect(r.x,r.y,r.width,r.height);
+        polygon(r.getVerts());
     }
     public void triangle(Triangle t){
         float[] f=t.getPoints();

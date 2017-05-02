@@ -21,12 +21,12 @@ public class Triangle {
 
     public Triangle(Vector2 ctr, float l){
         center.set(ctr);
-        points=new float[]{ctr.x-l/2,ctr.y+l/2,ctr.x+l/2,ctr.y+l/2,ctr.x,ctr.y-l/2};
+        points=new float[]{ctr.x-l/2,ctr.y+1+l/2,ctr.x+l/2,ctr.y+l/2,ctr.x,ctr.y-l/2};
         length =l;
     }
     public void translate(Vector2 ctr){
         center.set(ctr);
-        points=new float[]{ctr.x-length/2,ctr.y+length/2,ctr.x+length/2,ctr.y+length/2,ctr.x,ctr.y-length/2};
+        points=new float[]{ctr.x-length/2,ctr.y+length/2,ctr.x+length/2,ctr.y+1+length/2,ctr.x,ctr.y-length/2};
     }
     public float[] getPoints(){
         return points;

@@ -1,7 +1,8 @@
 package com.superjoust.qxst.shapes;
 
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+import com.superjoust.qxst.Vector2;
 
 import java.util.ArrayList;
 
@@ -55,5 +56,24 @@ public class Line {
         rect.add(new Line(c,d));
         rect.add(new Line(d,a));
         return rect;
+    }
+    public static ArrayList<Line> asLines(Polygon p){
+        float[] points = p.getVertices();
+        ArrayList<Line> triLines = new ArrayList<>();
+        Vector2 a=new Vector2(points[0],points[1]),
+                b=new Vector2(points[2],points[3]),
+                c=new Vector2(points[4],points[5]),
+                d=new Vector2(points[6],points[7]);
+
+        triLines.add(new Line(a,b));
+        triLines.add(new Line(b,c));
+        triLines.add(new Line(c,d));
+        triLines.add(new Line(d,a));
+
+        return triLines;
+    }
+
+    public float getAngle() {
+        return a.angle(b);
     }
 }

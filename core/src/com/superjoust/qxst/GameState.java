@@ -16,11 +16,11 @@ import static com.superjoust.qxst.Game.player1;
  */
 public class GameState extends State {
     float dtSwap=0;
-    LevelBuilder builder = new LevelBuilder();
+    static LevelBuilder builder = new LevelBuilder();
     protected GameState(GameStateManager gsm) {
         super(gsm);
         createPlatforms();
-
+        player1.onLevelStart();
 
     }
 
@@ -62,7 +62,7 @@ public class GameState extends State {
     public void render(SpriteBatch sb, ShapeRendererExt sr) {
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(Color.WHITE);
-        sr.triangle(player1.getShape());
+        sr.rect(player1.getShape());
         builder.levels.get(player1.getLevel()-1).draw(sr);
         sr.end();
     }
