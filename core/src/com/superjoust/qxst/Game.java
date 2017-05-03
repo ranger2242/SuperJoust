@@ -16,7 +16,9 @@ public class Game extends ApplicationAdapter {
 	public static int WIDTH=0;
 	public static int HEIGHT=0;
 	public static float GRAVITY=.085f;
-
+	public static void out(String s){
+		System.out.println(s);
+	}
 	@Override
 	public void create () {
 		WIDTH=Gdx.graphics.getWidth();

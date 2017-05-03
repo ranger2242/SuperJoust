@@ -14,7 +14,8 @@ import static com.superjoust.qxst.Game.*;
  */
 public class Enemy {
     int wrapCount=0;
-    int wrapMax=rn.nextInt(8);
+    int wrapMax=rn.nextInt(3)+3;
+    int holdingAlt=HEIGHT/(rn.nextInt(4)+1);;
 
     protected PolygonShape shape;
     protected Body body =null;
@@ -22,6 +23,7 @@ public class Enemy {
     protected FixtureDef fixtureDef = new FixtureDef();
     float speed=(float) (5*rn.nextFloat()+5);
     float dtWander=0;
+    float wanderMax=rn.nextFloat()+.5f;
     Queue<Command> commands = new LinkedList<>();
 
     public Enemy(){
@@ -31,7 +33,7 @@ public class Enemy {
         playerDef.type= BodyDef.BodyType.DynamicBody;
         playerDef.position.set(WIDTH/2/SCL,HEIGHT/2/SCL);
         shape=new PolygonShape();
-        com.badlogic.gdx.math.Vector2 v=SWORLD(new Vector2(10,10));
+        com.badlogic.gdx.math.Vector2 v=SWORLD(new Vector2(15,15));
         shape.setAsBox(v.x,v.y);
         fixtureDef.shape= shape;
         fixtureDef.friction=0;
@@ -48,22 +50,23 @@ public class Enemy {
         wrap();
     }
     void moveAI(){
-        maintainAltitude(300/SCL);
-        if(dtWander>1){
+        maintainAltitude(holdingAlt);
+        if(dtWander>wanderMax){
             wrapCount++;
             wander();
             dtWander=0;
         }
         if(wrapCount>wrapMax) {
-            wrapMax=rn.nextInt(8);
+            wrapMax=rn.nextInt(3)+3;
             speed = (float) (5 * rn.nextFloat() + 5);
             if(rn.nextBoolean())
                 speed*=-1;
-
+            holdingAlt= rn.nextInt(HEIGHT);
+            wrapCount=0;
         }
     }
     void maintainAltitude(int alt){
-        int r= HEIGHT/SCL-alt;
+        int r= HEIGHT/SCL-alt/SCL;
         if(body.getPosition().y>r)
             flap();
     }

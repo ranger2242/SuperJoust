@@ -3,12 +3,12 @@ package com.superjoust.qxst;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.superjoust.qxst.commands.FlapComm;
 import com.superjoust.qxst.commands.LeftComm;
 import com.superjoust.qxst.commands.RightComm;
 
+import static com.superjoust.qxst.EMath.rn;
 import static com.superjoust.qxst.Game.*;
 
 
@@ -17,6 +17,7 @@ import static com.superjoust.qxst.Game.*;
  */
 public class GameState extends State {
     float dtSwap = 0;
+    float dtPrint =0;
     static LevelBuilder builder = new LevelBuilder();
 
     static World world;
@@ -34,8 +35,32 @@ public class GameState extends State {
         createBox2DWorld();
         createPlatforms();
         player1.onStart();
-        Level lvl1 = new Level();
-        /*
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                // Check to see if the collision is between the second sprite and the bottom of the screen
+                // If so apply a random amount of upward force to both objects... just because
+                //for(Enemy e:builder.levels.get(player1.getLevel()).enemies){
+               // if((contact.getFixtureA().getBody() == player1.getBody() && contact.getFixtureB().getBody() == e) {
+                //}
+                //}
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+            }
+        });
+
+        Level l= new Level();
         for(int i=0;i<8;i++) {
             int a=0;
             if(rn.nextBoolean())
@@ -44,8 +69,9 @@ public class GameState extends State {
                 a=0;
             Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(300)+100, 10,a);
             p.onStart();
-            lvl1.addPlatform(p);
+            l.addPlatform(p);
         }
+        builder.testLvl=l;
 
 
 
@@ -82,14 +108,22 @@ public class GameState extends State {
     }
 
 
+
     void createPlatforms() {
-        builder.build();
-        builder.displayLevel(1);
+        //builder.build();
+       //builder.displayLevel(1);
 
     }
 
     @Override
     public void handleInput() {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+            if (dtPrint > 1f) {
+                builder.testLvl.print();
+                out("");
+                dtPrint=0;
+            }
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player1.queueComm(new FlapComm());
         }
@@ -102,13 +136,29 @@ public class GameState extends State {
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
             if (dtSwap > 1f) {
 
-                for (Platform p : builder.levels.get(player1.getLevel()-1).platforms) {
+
+                //for (Platform p : builder.levels.get(player1.getLevel()-1).platforms) {
+                for (Platform p : builder.testLvl.platforms) {
                     world.destroyBody(p.getBody());
                 }
                 player1.addLevel();
+                Level l= new Level();
+                for(int i=0;i<8;i++) {
+                    int a=0;
+                    if(rn.nextBoolean())
+                        a=rn.nextInt(360);
+                    else
+                        a=0;
+                    Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(300)+100, 10,a);
+                    p.onStart();
+                    l.addPlatform(p);
+                }
+                builder.testLvl=l;
 
+                /*
                 builder.displayLevel(player1.getLevel());
-                dtSwap = 0;
+                dtSwap = 0;*/
+                dtSwap=0;
             }
         }
     }
@@ -118,6 +168,7 @@ public class GameState extends State {
         handleInput();
         player1.update(dt);
         dtSwap += dt;
+        dtPrint+=dt;
         builder.update(dt);
         world.step(dt, 6, 2);
     }

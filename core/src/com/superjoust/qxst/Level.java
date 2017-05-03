@@ -2,6 +2,8 @@ package com.superjoust.qxst;
 
 import java.util.ArrayList;
 
+import static com.superjoust.qxst.Game.out;
+
 /**
  * Created by Chris Cavazos on 5/1/2017.
  */
@@ -44,6 +46,15 @@ public class Level {
             p.draw(sr);
         }
     }
+
+
+    public void print(){
+        for(Platform p:platforms){
+            out(p.print());
+        }
+    }
+
+
 
 
 }

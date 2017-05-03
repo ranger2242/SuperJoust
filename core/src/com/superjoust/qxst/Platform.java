@@ -21,11 +21,13 @@ public class Platform {
     protected PolygonShape shape;
     Vector3 xya=new Vector3();
     Vector2 wh=new Vector2();
+    String print="";
     public Platform(float x, float y, float w, float h, float a){
         Rectangle rect = new Rectangle(x,y,w,h,a);
         setDimm(rect.asPolygon());
         xya.set(x,y,a);
         wh.set(w,h);
+        print=x+" "+y+" "+w+" "+h+" "+a;
     }
     public void onStart(){
         playerDef.type= BodyDef.BodyType.StaticBody;
@@ -47,7 +49,7 @@ public class Platform {
     public Polygon getDimm() {
         return dimm;
     }
-
+    public String print(){return print;}
     public void setDimm(Polygon dimm) {
         this.dimm = dimm;
     }

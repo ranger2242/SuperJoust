@@ -39,7 +39,7 @@ public class Player {
         playerDef.type=BodyDef.BodyType.DynamicBody;
         playerDef.position.set(getPosition());
         shape=new PolygonShape();
-        com.badlogic.gdx.math.Vector2 v=SWORLD(new Vector2(10,10));
+        com.badlogic.gdx.math.Vector2 v=SWORLD(new Vector2(15,15));
         shape.setAsBox(v.x,v.y);
         fixtureDef.shape= shape;
         fixtureDef.friction=0;
@@ -140,9 +140,10 @@ public class Player {
         else return b;
     }
     float dtFlipVelocity=0;
-    public void update(float dt){
-        dtFlipVelocity+=dt;
-        for(Command c:commands){
+
+    public void update(float dt) {
+        dtFlipVelocity += dt;
+        for (Command c : commands) {
             c.execute();
         }
 
@@ -179,4 +180,7 @@ public class Player {
         velocity.add(v);
     }
 
+    public Body getBody() {
+        return body;
+    }
 }

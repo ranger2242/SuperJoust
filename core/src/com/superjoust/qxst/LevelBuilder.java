@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class LevelBuilder {
     ArrayList<Level> levels = new ArrayList<>();
-
+    static Level testLvl = new Level();
     int count =0;
     int currentLvl=0;
     public void build(){
@@ -30,8 +30,10 @@ public class LevelBuilder {
 
     public Level level1(){
         Level lvl1=new Level();
-        Enemy e=new Enemy();
-        lvl1.addEnemies(e);
+        for(int i=0;i<3;i++) {
+            Enemy e = new Enemy();
+            lvl1.addEnemies(e);
+        }
         //lvl1.addPlatform(new Platform(400, 200, 300, 15, 45));
         lvl1.addPlatform(new Platform(300, 10, 300, 15, 0));
         lvl1.addPlatform(new Platform(0, 400, 300, 15, 0));
@@ -42,7 +44,10 @@ public class LevelBuilder {
     }
     public Level level2(){
         Level lvl2=new Level();
-
+        for(int i=0;i<5;i++) {
+            Enemy e = new Enemy();
+            lvl2.addEnemies(e);
+        }
         lvl2.addPlatform(new Platform(0,0,1800,20,0));
         lvl2.addPlatform(new Platform(0,100,300,10,0));
         lvl2.addPlatform(new Platform(0,250,300,10,0));
@@ -60,10 +65,11 @@ public class LevelBuilder {
 
 
     public void update(float dt) {
-        Level l= levels.get(currentLvl);
-        for(Enemy e:l.enemies){
-            e.update(dt);
+        if(currentLvl>0) {
+            Level l = levels.get(currentLvl);
+            for (Enemy e : l.enemies) {
+                e.update(dt);
+            }
         }
-
     }
 }
