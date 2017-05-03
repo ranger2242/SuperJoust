@@ -1,9 +1,6 @@
 package com.superjoust.qxst;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.superjoust.qxst.commands.Command;
 
 import java.util.LinkedList;
@@ -44,7 +41,9 @@ public class Player {
         fixtureDef.shape= shape;
         body = GameState.getWorld().createBody(playerDef);
         body.createFixture(fixtureDef);
-
+        MassData m= new MassData();
+        m.mass=5;
+        body.setMassData(m);
         changePos(new Vector2(300,300));
 
         lives = 5;
@@ -61,35 +60,33 @@ public class Player {
     }
     public void move(Vector2 vector2){
         body.applyForceToCenter(vector2,true);
-        capVelocity(6);
     }
     void wrapPlayer(){
-        com.badlogic.gdx.math.Vector2 position= body.getPosition();
-        if(position.x<0){
-            position.x=Game.WIDTH;
+        com.badlogic.gdx.math.Vector2 pos= body.getPosition();
+        com.badlogic.gdx.math.Vector2 vel=body.getLinearVelocity();
+        if(pos.x<0){
+            pos.x=Game.WIDTH;
         }
-        if(position.x>Game.WIDTH){
-            position.x=0;
+        if(pos.x>Game.WIDTH){
+            pos.x=0;
         }
-        if(position.y<0)position.y=1;
-        if(position.y>Game.HEIGHT) {
-            position.y = Game.HEIGHT - 1;
-            velocity.y=-velocity.y;
+        if(pos.y>Game.HEIGHT)pos.y=Game.HEIGHT-1;
+        if(pos.y<0) {
+            pos.y = 1;
+            vel.y=-vel.y;
         }
-        body.setTransform(position,0);
+        body.setLinearVelocity(vel);
+        body.setTransform(pos,0);
 
     }
     void capVelocity(int max){
-        if(velocity.x>max) velocity.x=max;
-        if(velocity.x<-max) velocity.x=-max;
-        if(velocity.y<(float)-(max)*3/4) velocity.y=(float) (-max)*3/4;
-        if(accel.x>.2)accel.x=.2f;
-        if(accel.x<-.2)accel.x=-.2f;
-        if((int)position.y==1){
-            velocity.y=0;
-        }
-        float wind=.05f;
-        accel.set(accel.x*wind,accel.y*wind);
+        com.badlogic.gdx.math.Vector2 vel=body.getLinearVelocity();
+
+        if(vel.x>max) vel.x=max;
+        if(vel.x<-max) vel.x=-max;
+       // if(vel.y<(float)-(max)*3/4) vel.y=(float) (-max)*3/4;
+
+        body.setLinearVelocity(vel);
     }
 
     void collisionHandler(){
@@ -140,7 +137,7 @@ public class Player {
 
         //collisionHandler();
         wrapPlayer();
-        capVelocity(6);
+        //capVelocity(100);
         commands.clear();
     }
    public void addAcceleration(Vector2 acc){

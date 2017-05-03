@@ -60,7 +60,7 @@ public class GameState extends State {
 
     void createBox2DWorld() {
         box2DDebugRenderer = new Box2DDebugRenderer();
-        world = new World(new Vector2(0, 9.81f), true);
+        world = new World(new Vector2(0, 98f), true);
     }
 
 
