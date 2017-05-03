@@ -9,6 +9,7 @@ public class LevelBuilder {
     ArrayList<Level> levels = new ArrayList<>();
 
     int count =0;
+    int currentLvl=0;
     public void build(){
         level1();
         level2();
@@ -18,15 +19,20 @@ public class LevelBuilder {
     }
     void displayLevel(int i){
         i--;
+        currentLvl=i;
         for(Platform p:levels.get(i).platforms){
             p.onStart();
+        }
+        for(Enemy e:levels.get(i).enemies){
+            e.onStart();
         }
     }
 
     public Level level1(){
         Level lvl1=new Level();
-
-        lvl1.addPlatform(new Platform(400, 200, 300, 15, 45));
+        Enemy e=new Enemy();
+        lvl1.addEnemies(e);
+        //lvl1.addPlatform(new Platform(400, 200, 300, 15, 45));
         lvl1.addPlatform(new Platform(300, 10, 300, 15, 0));
         lvl1.addPlatform(new Platform(0, 400, 300, 15, 0));
 
@@ -53,7 +59,11 @@ public class LevelBuilder {
     }
 
 
+    public void update(float dt) {
+        Level l= levels.get(currentLvl);
+        for(Enemy e:l.enemies){
+            e.update(dt);
+        }
 
-
-
+    }
 }

@@ -118,6 +118,7 @@ public class GameState extends State {
         handleInput();
         player1.update(dt);
         dtSwap += dt;
+        builder.update(dt);
         world.step(dt, 6, 2);
     }
 
