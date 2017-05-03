@@ -64,6 +64,7 @@ public class Player {
         capVelocity(6);
     }
     void wrapPlayer(){
+        com.badlogic.gdx.math.Vector2 position= body.getPosition();
         if(position.x<0){
             position.x=Game.WIDTH;
         }
@@ -75,6 +76,7 @@ public class Player {
             position.y = Game.HEIGHT - 1;
             velocity.y=-velocity.y;
         }
+        body.setTransform(position,0);
 
     }
     void capVelocity(int max){
