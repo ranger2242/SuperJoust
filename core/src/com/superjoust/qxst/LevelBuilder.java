@@ -63,7 +63,12 @@ public class LevelBuilder {
 
     }
 
+    public void updateTestLvl(float dt) {
 
+            for (Enemy e : testLvl.enemies) {
+                e.update(dt);
+            }
+    }
     public void update(float dt) {
         if(currentLvl>0) {
             Level l = levels.get(currentLvl);

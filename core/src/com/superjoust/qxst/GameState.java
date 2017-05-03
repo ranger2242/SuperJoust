@@ -153,6 +153,11 @@ public class GameState extends State {
                     p.onStart();
                     l.addPlatform(p);
                 }
+                for(int i=0;i<5;i++){
+                    Enemy e=new Enemy();
+                    e.onStart();
+                    l.addEnemies(e);
+                }
                 builder.testLvl=l;
 
                 /*
@@ -170,6 +175,7 @@ public class GameState extends State {
         dtSwap += dt;
         dtPrint+=dt;
         builder.update(dt);
+        builder.updateTestLvl(dt);
         world.step(dt, 6, 2);
     }
 

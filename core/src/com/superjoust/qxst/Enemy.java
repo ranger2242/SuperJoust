@@ -21,7 +21,7 @@ public class Enemy {
     protected Body body =null;
     protected BodyDef playerDef=new BodyDef();
     protected FixtureDef fixtureDef = new FixtureDef();
-    float speed=(float) (5*rn.nextFloat()+5);
+    float speed=(float) (5*rn.nextFloat()+2);
     float dtWander=0;
     float wanderMax=rn.nextFloat()+.5f;
     Queue<Command> commands = new LinkedList<>();
@@ -58,7 +58,7 @@ public class Enemy {
         }
         if(wrapCount>wrapMax) {
             wrapMax=rn.nextInt(3)+3;
-            speed = (float) (5 * rn.nextFloat() + 5);
+            speed = (float) (5 * rn.nextFloat() + 2);
             if(rn.nextBoolean())
                 speed*=-1;
             holdingAlt= rn.nextInt(HEIGHT);
