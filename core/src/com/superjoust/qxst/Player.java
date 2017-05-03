@@ -164,6 +164,7 @@ public class Player {
     }
 
     public Vector2 getPosition() {
+
         return position;
     }
     public void addVelocity(Vector2 v){

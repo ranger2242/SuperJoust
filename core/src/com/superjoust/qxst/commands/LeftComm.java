@@ -1,6 +1,7 @@
 package com.superjoust.qxst.commands;
 
 
+import com.superjoust.qxst.Game;
 import com.superjoust.qxst.Vector2;
 
 import static com.superjoust.qxst.Game.player1;
@@ -15,6 +16,8 @@ public class LeftComm extends Command {
 
     @Override
     public void execute() {
-        player1.move(new Vector2(-3,0));
+        Vector2 left = new Vector2(-3,0);
+
+        player1.move(Game.SPIXEL(left));
     }
 }

@@ -1,6 +1,7 @@
 package com.superjoust.qxst.commands;
 
 
+import com.superjoust.qxst.Game;
 import com.superjoust.qxst.Vector2;
 
 import static com.superjoust.qxst.Game.player1;
@@ -14,6 +15,7 @@ public class FlapComm extends Command {
     }
     @Override
     public void execute() {
-        player1.move(new Vector2(0,-50));
+        Vector2 vec =new Vector2(0,-2);
+        player1.move(Game.SPIXEL(vec));
     }
 }
