@@ -11,7 +11,7 @@ public class LevelBuilder {
     ArrayList<Level> levels = new ArrayList<>();
     static Level testLvl = new Level();
     int count =0;
-    int currentLvl=0;
+    int currentLvl=1;
     public void build(){
        /* level1();
         level2();
@@ -105,7 +105,7 @@ public class LevelBuilder {
             }
     }
     public void update(float dt) {
-        if(currentLvl>0) {
+        if(currentLvl>=0) {
             Level l = levels.get(currentLvl);
             for (Enemy e : l.enemies) {
                 e.update(dt);

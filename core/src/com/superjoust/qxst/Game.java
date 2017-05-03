@@ -86,9 +86,12 @@ public class Game extends ApplicationAdapter {
                     if (levels.get(count).equals(null)) {
                         levels.set(count, new Level());
                     } else levels.get(count).platforms.add(p);
-
                 }else count++;
             }
+            for(int j=0;j<count;j++){
+				for(int i=0;i<3;i++)
+				levels.get(j).enemies.add(new Enemy());
+			}
             return levels;
         } catch (IOException e) {
             e.printStackTrace();

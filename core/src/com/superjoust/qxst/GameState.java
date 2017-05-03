@@ -109,11 +109,21 @@ public class GameState extends State {
         for (Platform p : builder.testLvl.platforms) {
             world.destroyBody(p.getBody());
         }
-        if (player1.getLevel() - 1 < builder.levels.size())
+        for (Enemy p : builder.testLvl.enemies) {
+            world.destroyBody(p.getBody());
+        }
+        if (player1.getLevel() - 1 < builder.levels.size()) {
             for (Platform p : builder.levels.get(player1.getLevel() - 1).platforms) {
                 if (p.body != null)
                     world.destroyBody(p.getBody());
             }
+            for (Enemy p : builder.levels.get(player1.getLevel() - 1).enemies) {
+                if (p.body != null)
+                    world.destroyBody(p.getBody());
+            }
+
+        }
+
     }
 
     @Override

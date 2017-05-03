@@ -102,5 +102,7 @@ public class Enemy {
     }
 
 
-
+    public Body getBody() {
+        return body;
+    }
 }
