@@ -13,6 +13,7 @@ public class FlapComm extends Command {
     public FlapComm(){
 
     }
+    //commit
     @Override
     public void execute() {
         Vector2 vec =new Vector2(0,-2);
