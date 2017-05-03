@@ -3,13 +3,12 @@ package com.superjoust.qxst;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.*;
-
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.superjoust.qxst.commands.FlapComm;
 import com.superjoust.qxst.commands.LeftComm;
 import com.superjoust.qxst.commands.RightComm;
 
-import static com.superjoust.qxst.EMath.rn;
 import static com.superjoust.qxst.Game.*;
 
 
@@ -29,13 +28,14 @@ public class GameState extends State {
 
     protected GameState(GameStateManager gsm) {
         super(gsm);
-        Vector2 v =new Vector2(WIDTH,HEIGHT);
-        v=SWORLD(v);
-        cam.setToOrtho(true,v.x,v.y);
-        createPlatforms();
+        Vector2 v = new Vector2(WIDTH, HEIGHT);
+        v = SWORLD(v);
+        cam.setToOrtho(true, v.x, v.y);
         createBox2DWorld();
+        createPlatforms();
         player1.onStart();
-        Level lvl1= new Level();
+        Level lvl1 = new Level();
+        /*
         for(int i=0;i<8;i++) {
             int a=0;
             if(rn.nextBoolean())
@@ -46,6 +46,10 @@ public class GameState extends State {
             p.onStart();
             lvl1.addPlatform(p);
         }
+
+
+
+
         /*BodyDef bodyDef = new BodyDef();
         Body body = null;
         FixtureDef fixtureDef = new FixtureDef();
@@ -80,6 +84,7 @@ public class GameState extends State {
 
     void createPlatforms() {
         builder.build();
+        builder.displayLevel(1);
 
     }
 
@@ -95,8 +100,14 @@ public class GameState extends State {
             player1.queueComm(new RightComm());
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
-            if (dtSwap > .5f) {
+            if (dtSwap > 1f) {
+
+                for (Platform p : builder.levels.get(player1.getLevel()-1).platforms) {
+                    world.destroyBody(p.getBody());
+                }
                 player1.addLevel();
+
+                builder.displayLevel(player1.getLevel());
                 dtSwap = 0;
             }
         }
@@ -112,6 +123,7 @@ public class GameState extends State {
 
     @Override
     public void render(SpriteBatch sb, ShapeRendererExt sr) {
+
         box2DDebugRenderer.render(world, cam.combined);
         /*
         sr.begin(ShapeRenderer.ShapeType.Line);

@@ -1,9 +1,6 @@
 package com.superjoust.qxst;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Dago on 5/1/2017.
@@ -19,7 +16,12 @@ public class LevelBuilder {
             count++;
         }
     }
-
+    void displayLevel(int i){
+        i--;
+        for(Platform p:levels.get(i).platforms){
+            p.onStart();
+        }
+    }
 
     public Level level1(){
         Level lvl1=new Level();

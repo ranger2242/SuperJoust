@@ -56,4 +56,7 @@ public class Platform {
         sr.polygon(dimm.getVertices());
     }
 
+    public Body getBody() {
+        return body;
+    }
 }
