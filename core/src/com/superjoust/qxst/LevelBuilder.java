@@ -2,6 +2,8 @@ package com.superjoust.qxst;
 
 import java.util.ArrayList;
 
+import static com.superjoust.qxst.EMath.rn;
+
 /**
  * Created by Dago on 5/1/2017.
  */
@@ -11,11 +13,15 @@ public class LevelBuilder {
     int count =0;
     int currentLvl=0;
     public void build(){
-        level1();
+       /* level1();
         level2();
+        level3();
+       // ran();
         for (Level l:levels) {
             count++;
-        }
+        }*/
+        levels=Game.initFile();
+
     }
     void displayLevel(int i){
         i--;
@@ -62,6 +68,35 @@ public class LevelBuilder {
         return  lvl2;
 
     }
+    public Level level3(){
+        Level lvl1=new Level();
+
+        lvl1.addPlatform(new Platform(400, 200, 300, 15, 45));
+        lvl1.addPlatform(new Platform(300, 10, 300, 15, 0));
+        lvl1.addPlatform(new Platform(0, 400, 300, 15, 0));
+
+        levels.add(lvl1);
+        return  lvl1;
+
+    }
+    public Level ran(){
+        Level ran = new Level();
+        for(int i=0;i<8;i++) {
+            int a;
+            if (rn.nextBoolean())
+                a = rn.nextInt(360);
+            else{
+                a = 0;
+            Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(300) + 100, 10, a);
+            p.onStart();
+            ran.addPlatform(p);
+        }
+    }
+    levels.add(ran);
+    return ran;
+
+    }
+
 
     public void updateTestLvl(float dt) {
 

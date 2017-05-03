@@ -17,7 +17,7 @@ import static com.superjoust.qxst.Game.*;
  */
 public class GameState extends State {
     float dtSwap = 0;
-    float dtPrint =0;
+    float dtPrint = 0;
     static LevelBuilder builder = new LevelBuilder();
 
     static World world;
@@ -41,7 +41,7 @@ public class GameState extends State {
                 // Check to see if the collision is between the second sprite and the bottom of the screen
                 // If so apply a random amount of upward force to both objects... just because
                 //for(Enemy e:builder.levels.get(player1.getLevel()).enemies){
-               // if((contact.getFixtureA().getBody() == player1.getBody() && contact.getFixtureB().getBody() == e) {
+                // if((contact.getFixtureA().getBody() == player1.getBody() && contact.getFixtureB().getBody() == e) {
                 //}
                 //}
 
@@ -60,18 +60,9 @@ public class GameState extends State {
             }
         });
 
-        Level l= new Level();
-        for(int i=0;i<8;i++) {
-            int a=0;
-            if(rn.nextBoolean())
-                a=rn.nextInt(360);
-            else
-                a=0;
-            Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(300)+100, 10,a);
-            p.onStart();
-            l.addPlatform(p);
-        }
-        builder.testLvl=l;
+
+    }
+    //builder.testLvl=l;
 
 
 
@@ -100,7 +91,7 @@ public class GameState extends State {
         shape.setAsBox(100, 5);
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);*/
-    }
+
 
     void createBox2DWorld() {
         box2DDebugRenderer = new Box2DDebugRenderer();
@@ -108,11 +99,21 @@ public class GameState extends State {
     }
 
 
-
     void createPlatforms() {
-        //builder.build();
-       //builder.displayLevel(1);
+        builder.build();
+        builder.displayLevel(1);
 
+    }
+
+    void clearWorld() {
+        for (Platform p : builder.testLvl.platforms) {
+            world.destroyBody(p.getBody());
+        }
+        if (player1.getLevel() - 1 < builder.levels.size())
+            for (Platform p : builder.levels.get(player1.getLevel() - 1).platforms) {
+                if (p.body != null)
+                    world.destroyBody(p.getBody());
+            }
     }
 
     @Override
@@ -121,7 +122,7 @@ public class GameState extends State {
             if (dtPrint > 1f) {
                 builder.testLvl.print();
                 out("");
-                dtPrint=0;
+                dtPrint = 0;
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -133,37 +134,42 @@ public class GameState extends State {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player1.queueComm(new RightComm());
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.F2)) {
+            if (dtSwap > 1f) {
+                clearWorld();
+                player1.addLevel();
+                builder.displayLevel(player1.getLevel());
+                dtSwap = 0;
+            }
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
             if (dtSwap > 1f) {
 
-
-                //for (Platform p : builder.levels.get(player1.getLevel()-1).platforms) {
-                for (Platform p : builder.testLvl.platforms) {
-                    world.destroyBody(p.getBody());
-                }
+                clearWorld();
                 player1.addLevel();
-                Level l= new Level();
-                for(int i=0;i<8;i++) {
-                    int a=0;
-                    if(rn.nextBoolean())
-                        a=rn.nextInt(360);
+                Level l = new Level();
+                for (int i = 0; i < 8; i++) {
+                    int a = 0;
+                    if (rn.nextBoolean())
+                        a = rn.nextInt(360);
                     else
-                        a=0;
-                    Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(300)+100, 10,a);
+                        a = 0;
+                    Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(300) + 100, 10, a);
                     p.onStart();
                     l.addPlatform(p);
                 }
-                for(int i=0;i<5;i++){
-                    Enemy e=new Enemy();
+                for (int i = 0; i < 5; i++) {
+                    Enemy e = new Enemy();
                     e.onStart();
                     l.addEnemies(e);
                 }
-                builder.testLvl=l;
+                builder.testLvl = l;
+                builder.testLvl = l;
 
                 /*
                 builder.displayLevel(player1.getLevel());
                 dtSwap = 0;*/
-                dtSwap=0;
+                dtSwap = 0;
             }
         }
     }
@@ -173,7 +179,7 @@ public class GameState extends State {
         handleInput();
         player1.update(dt);
         dtSwap += dt;
-        dtPrint+=dt;
+        dtPrint += dt;
         builder.update(dt);
         builder.updateTestLvl(dt);
         world.step(dt, 6, 2);
