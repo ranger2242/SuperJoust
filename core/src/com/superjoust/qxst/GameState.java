@@ -9,7 +9,8 @@ import com.superjoust.qxst.commands.FlapComm;
 import com.superjoust.qxst.commands.LeftComm;
 import com.superjoust.qxst.commands.RightComm;
 
-import static com.superjoust.qxst.Game.player1;
+import static com.superjoust.qxst.EMath.rn;
+import static com.superjoust.qxst.Game.*;
 
 
 /**
@@ -28,10 +29,23 @@ public class GameState extends State {
 
     protected GameState(GameStateManager gsm) {
         super(gsm);
+        Vector2 v =new Vector2(WIDTH,HEIGHT);
+        v=SWORLD(v);
+        cam.setToOrtho(true,v.x,v.y);
         createPlatforms();
         createBox2DWorld();
         player1.onStart();
-
+        Level lvl1= new Level();
+        for(int i=0;i<8;i++) {
+            int a=0;
+            if(rn.nextBoolean())
+                a=rn.nextInt(360);
+            else
+                a=0;
+            Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(300)+100, 10,a);
+            p.onStart();
+            lvl1.addPlatform(p);
+        }
         /*BodyDef bodyDef = new BodyDef();
         Body body = null;
         FixtureDef fixtureDef = new FixtureDef();
@@ -60,7 +74,7 @@ public class GameState extends State {
 
     void createBox2DWorld() {
         box2DDebugRenderer = new Box2DDebugRenderer();
-        world = new World(new Vector2(0, 98f), true);
+        world = new World(new Vector2(0, 9.8f), true);
     }
 
 

@@ -16,7 +16,7 @@ public class LeftComm extends Command {
 
     @Override
     public void execute() {
-        Vector2 left = new Vector2(-25,0);
+        Vector2 left = new Vector2(-1,0);
 
         player1.move(Game.SPIXEL(left));
     }

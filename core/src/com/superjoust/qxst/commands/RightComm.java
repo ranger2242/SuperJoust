@@ -16,7 +16,7 @@ public class RightComm extends Command {
 
     @Override
     public void execute() {
-       Vector2 vec = new Vector2(25,0);
+       Vector2 vec = new Vector2(1,0);
         player1.move(Game.SPIXEL(vec));
     }
 }

@@ -16,7 +16,7 @@ public class FlapComm extends Command {
     //commit
     @Override
     public void execute() {
-        Vector2 vec =new Vector2(0,-40);
+        Vector2 vec =new Vector2(0,-2);
         player1.move(Game.SPIXEL(vec));
     }
 }

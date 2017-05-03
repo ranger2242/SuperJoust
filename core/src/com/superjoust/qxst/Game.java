@@ -10,6 +10,7 @@ public class Game extends ApplicationAdapter {
 	public static Enemy testEnemy = new Enemy();
 	SpriteBatch batch;
 	ShapeRendererExt sr ;
+	public static int SCL=50;
 	GameStateManager gsm = new GameStateManager();
 
 	public static int WIDTH=0;
@@ -28,14 +29,14 @@ public class Game extends ApplicationAdapter {
 	}
 	public static Vector2 SPIXEL(Vector2 v){
 		Vector2 x = new Vector2();
-		x.x=50*v.x;
-		x.y=50*v.y;
+		x.x=SCL*v.x;
+		x.y=SCL*v.y;
 		return x;
 	}
 	public static Vector2 SWORLD(Vector2 v){
 		Vector2 x = new Vector2();
-		x.x=v.x/50;
-		x.y=v.y/50;
+		x.x=v.x/SCL;
+		x.y=v.y/SCL;
 		return x;
 	}
 

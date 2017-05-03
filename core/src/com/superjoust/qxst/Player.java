@@ -6,6 +6,9 @@ import com.superjoust.qxst.commands.Command;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static com.superjoust.qxst.Game.SCL;
+import static com.superjoust.qxst.Game.SWORLD;
+
 /**
  * Created by Dago on 5/1/2017.
  */
@@ -36,9 +39,11 @@ public class Player {
         playerDef.type=BodyDef.BodyType.DynamicBody;
         playerDef.position.set(getPosition());
         shape=new PolygonShape();
-
-        shape.setAsBox(10,10);
+        com.badlogic.gdx.math.Vector2 v=SWORLD(new Vector2(10,10));
+        shape.setAsBox(v.x,v.y);
         fixtureDef.shape= shape;
+        fixtureDef.friction=0;
+        fixtureDef.restitution=.3f;
         body = GameState.getWorld().createBody(playerDef);
         body.createFixture(fixtureDef);
         MassData m= new MassData();
@@ -52,6 +57,9 @@ public class Player {
 
 
     }
+
+
+
     public void queueComm(Command c){
         commands.add(c);
     }
@@ -65,14 +73,17 @@ public class Player {
         com.badlogic.gdx.math.Vector2 pos= body.getPosition();
         com.badlogic.gdx.math.Vector2 vel=body.getLinearVelocity();
         if(pos.x<0){
-            pos.x=Game.WIDTH;
+            pos.x=Game.WIDTH/SCL;
         }
-        if(pos.x>Game.WIDTH){
+        if(pos.x>Game.WIDTH/SCL){
             pos.x=0;
         }
-        if(pos.y>Game.HEIGHT)pos.y=Game.HEIGHT-1;
+        if(pos.y>Game.HEIGHT/SCL){
+            pos.y=Game.HEIGHT/SCL;
+            vel.y=0;
+        }
         if(pos.y<0) {
-            pos.y = 1;
+            pos.y = 0;
             vel.y=-vel.y;
         }
         body.setLinearVelocity(vel);
