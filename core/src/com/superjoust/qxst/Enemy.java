@@ -105,7 +105,10 @@ public class Enemy {
 
     }
     void setDead(boolean b){
-        dead=true;
+        dead=b;
+        if(isDead()){
+            player1.addScore(100);
+        }
     };
     public boolean isDead(){return dead;}
 

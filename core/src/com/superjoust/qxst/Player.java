@@ -9,8 +9,7 @@ import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static com.superjoust.qxst.Game.SCL;
-import static com.superjoust.qxst.Game.SWORLD;
+import static com.superjoust.qxst.Game.*;
 
 /**
  * Created by Dago on 5/1/2017.
@@ -179,14 +178,34 @@ public class Player {
         sr.setColor(Color.YELLOW);
         sr.rect((body.getPosition().x),(body.getPosition().y),.1f,.1f);
     }
+
+    public long getScore() {
+        return score;
+    }
+
+    public void setScore(long score) {
+        this.score = score;
+    }
+    public void addScore(int sc){
+        score+=sc;
+        new HoverText(""+sc,1, Color.WHITE,getScrCorrd().x,getScrCorrd().y,false);
+
+    }
+
     public void drawSB(SpriteBatch sb){
         DecimalFormat df = new DecimalFormat(".##");
+        DecimalFormat df1 = new DecimalFormat("0000000000");
+
         if(isDead()){
             Game.getFont().draw(sb,"DEAD",Game.WIDTH/2/SCL,Game.HEIGHT/2/SCL);
         }
+        Game.getFont().draw(sb,"Score: "+df1.format(score),20,80);
         Game.getFont().draw(sb,"Lives: "+lives,20,60);
         Game.getFont().draw(sb,"y_"+df.format(body.getPosition().y),20,40);
         Game.getFont().draw(sb,"x_"+df.format(body.getPosition().x),20,20);
+    }
+    public Vector2 getScrCorrd(){
+        return new Vector2(body.getPosition().x*SCL,HEIGHT-body.getPosition().y*SCL);
     }
     public void setDead(boolean b){
         dead=b;

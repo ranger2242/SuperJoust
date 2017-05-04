@@ -2,7 +2,6 @@ package com.superjoust.qxst;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.*;
@@ -90,7 +89,6 @@ public class GameState extends State {
     void createPlatforms() {
         builder.build();
         builder.displayLevel(1);
-        new HoverText("1000",3, Color.WHITE,(WIDTH/2),(HEIGHT/2),false);
 
     }
 
@@ -188,7 +186,6 @@ public class GameState extends State {
 
             }
         }catch (ConcurrentModificationException ex){
-            ex.printStackTrace();
         }
     }
 
