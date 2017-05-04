@@ -3,6 +3,7 @@ package com.superjoust.qxst;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.io.BufferedReader;
@@ -17,7 +18,7 @@ public class Game extends ApplicationAdapter {
     ShapeRendererExt sr;
     public static int SCL = 50;
     GameStateManager gsm = new GameStateManager();
-
+    public static BitmapFont font;
     public static int WIDTH = 0;
     public static int HEIGHT = 0;
     public static float GRAVITY = .085f;
@@ -28,6 +29,8 @@ public class Game extends ApplicationAdapter {
 
     @Override
     public void create() {
+        font = new BitmapFont();
+        Gdx.graphics.setWindowedMode(1000,800);
         WIDTH = Gdx.graphics.getWidth();
         HEIGHT = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
@@ -89,7 +92,7 @@ public class Game extends ApplicationAdapter {
                 }else count++;
             }
             for(int j=0;j<count;j++){
-				for(int i=0;i<3;i++)
+				for(int i=0;i<5;i++)
 				levels.get(j).enemies.add(new Enemy());
 			}
             return levels;
@@ -97,5 +100,9 @@ public class Game extends ApplicationAdapter {
             e.printStackTrace();
         }
         return new ArrayList<>();
+    }
+
+    public static BitmapFont getFont() {
+        return font;
     }
 }

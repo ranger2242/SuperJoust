@@ -14,14 +14,16 @@ import static com.superjoust.qxst.Game.*;
  */
 public class Enemy {
     int wrapCount=0;
-    int wrapMax=rn.nextInt(3)+3;
+    int wrapMax=rn.nextInt(3)+1;
     int holdingAlt=HEIGHT/(rn.nextInt(4)+1);;
+
+    boolean dead = false;
 
     protected PolygonShape shape;
     protected Body body =null;
     protected BodyDef playerDef=new BodyDef();
     protected FixtureDef fixtureDef = new FixtureDef();
-    float speed=(float) (5*rn.nextFloat()+2);
+    float speed=newSpeed();
     float dtWander=0;
     float wanderMax=rn.nextFloat()+.5f;
     Queue<Command> commands = new LinkedList<>();
@@ -49,6 +51,9 @@ public class Enemy {
        moveAI();
         wrap();
     }
+    float newSpeed(){
+        return (10 * rn.nextFloat() + 3);
+    }
     void moveAI(){
         maintainAltitude(holdingAlt);
         if(dtWander>wanderMax){
@@ -57,8 +62,7 @@ public class Enemy {
             dtWander=0;
         }
         if(wrapCount>wrapMax) {
-            wrapMax=rn.nextInt(3)+3;
-            speed = (float) (5 * rn.nextFloat() + 2);
+            wrapMax=rn.nextInt(3)+1;
             if(rn.nextBoolean())
                 speed*=-1;
             holdingAlt= rn.nextInt(HEIGHT);
@@ -100,9 +104,16 @@ public class Enemy {
         body.setTransform(pos,0);
 
     }
-
+    void setDead(boolean b){
+        dead=true;
+    };
+    public boolean isDead(){return dead;}
 
     public Body getBody() {
         return body;
     }
+    public void drawSR(ShapeRendererExt sr){
+        sr.circle(body.getPosition().x,body.getPosition().y,.3f);
+    }
 }
+

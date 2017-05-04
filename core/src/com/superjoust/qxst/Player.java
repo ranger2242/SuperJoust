@@ -1,8 +1,11 @@
 package com.superjoust.qxst;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.superjoust.qxst.commands.Command;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -14,7 +17,8 @@ import static com.superjoust.qxst.Game.SWORLD;
  */
 public class Player {
 
-
+    boolean dead=false;
+    float dtFlipVelocity=0;
     protected int lives=0;
     protected int level;
     protected Vector2 position=new Vector2(0,0);
@@ -57,9 +61,6 @@ public class Player {
 
 
     }
-
-
-
     public void queueComm(Command c){
         commands.add(c);
     }
@@ -99,7 +100,6 @@ public class Player {
 
         body.setLinearVelocity(vel);
     }
-
     void collisionHandler(){
         /*
         ArrayList<Line> surfaces = new ArrayList<>();
@@ -139,8 +139,6 @@ public class Player {
             return a;
         else return b;
     }
-    float dtFlipVelocity=0;
-
     public void update(float dt) {
         dtFlipVelocity += dt;
         for (Command c : commands) {
@@ -152,26 +150,21 @@ public class Player {
         //capVelocity(100);
         commands.clear();
     }
-   public void addAcceleration(Vector2 acc){
+    public void addAcceleration(Vector2 acc){
         accel.add(acc);
    }
-
     public PolygonShape getShape() {
         return shape;
     }
-
-
     public void addPosition(Vector2 v) {
        position.add(v);
     }
-
     public int getLevel() {
        return level;
     }
     public void addLevel(){
        level++;
     }
-
     public Vector2 getPosition() {
 
         return position;
@@ -179,8 +172,34 @@ public class Player {
     public void addVelocity(Vector2 v){
         velocity.add(v);
     }
-
     public Body getBody() {
         return body;
     }
+    public void drawSR(ShapeRendererExt sr){
+        sr.setColor(Color.YELLOW);
+        sr.rect((body.getPosition().x),(body.getPosition().y),.1f,.1f);
+    }
+    public void drawSB(SpriteBatch sb){
+        DecimalFormat df = new DecimalFormat(".##");
+        if(isDead()){
+            Game.getFont().draw(sb,"DEAD",Game.WIDTH/2/SCL,Game.HEIGHT/2/SCL);
+        }
+        Game.getFont().draw(sb,"Lives: "+lives,20,60);
+        Game.getFont().draw(sb,"y_"+df.format(body.getPosition().y),20,40);
+        Game.getFont().draw(sb,"x_"+df.format(body.getPosition().x),20,20);
+    }
+    public void setDead(boolean b){
+        dead=b;
+    }
+    public boolean isDead(){
+        return dead;
+    }
+    public void death() {
+        if(isDead()) {
+            lives--;
+            body.setTransform(new Vector2(Game.WIDTH/2/SCL, 0), 0);
+            dead=false;
+        }
+    }
 }
+

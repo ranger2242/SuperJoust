@@ -3,6 +3,7 @@ package com.superjoust.qxst;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.*;
 import com.superjoust.qxst.commands.FlapComm;
 import com.superjoust.qxst.commands.LeftComm;
@@ -35,20 +36,32 @@ public class GameState extends State {
         createBox2DWorld();
         createPlatforms();
         player1.onStart();
+        Spawn spawn = new Spawn(100,300,0);
+        spawn.onStart();
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                // Check to see if the collision is between the second sprite and the bottom of the screen
-                // If so apply a random amount of upward force to both objects... just because
-                //for(Enemy e:builder.levels.get(player1.getLevel()).enemies){
-                // if((contact.getFixtureA().getBody() == player1.getBody() && contact.getFixtureB().getBody() == e) {
-                //}
-                //}
+                for (Enemy e : builder.levels.get(player1.getLevel() - 1).enemies) {
 
+                    if ((contact.getFixtureA().getBody().equals(player1.getBody()) && contact.getFixtureB().getBody().equals(e.getBody()))
+                            || (contact.getFixtureA().getBody().equals(e.getBody()) && contact.getFixtureB().getBody().equals(player1.getBody()))) {
+
+                        if (player1.getBody().getPosition().y < e.getBody().getPosition().y - .1) {
+                            e.setDead(true);
+
+                        }
+                        if (player1.getBody().getPosition().y > e.getBody().getPosition().y + .1f) {
+                            player1.setDead(true);
+
+                        }
+
+                    }
+                }
             }
 
             @Override
             public void endContact(Contact contact) {
+
             }
 
             @Override
@@ -63,34 +76,6 @@ public class GameState extends State {
 
     }
     //builder.testLvl=l;
-
-
-
-
-        /*BodyDef bodyDef = new BodyDef();
-        Body body = null;
-        FixtureDef fixtureDef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
-
-        //create body
-        bodyDef.position.set(player1.getPosition());
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        body = world.createBody(bodyDef);
-
-
-        //set shape
-        shape.setAsBox(10, 10);
-        fixtureDef.shape = shape;
-        body.createFixture(fixtureDef);
-
-// platform
-        bodyDef.position.set(200, 400);
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        body = world.createBody(bodyDef);
-        shape = new PolygonShape();
-        shape.setAsBox(100, 5);
-        fixtureDef.shape = shape;
-        body.createFixture(fixtureDef);*/
 
 
     void createBox2DWorld() {
@@ -158,13 +143,13 @@ public class GameState extends State {
                 clearWorld();
                 player1.addLevel();
                 Level l = new Level();
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i <10; i++) {
                     int a = 0;
                     if (rn.nextBoolean())
                         a = rn.nextInt(360);
                     else
                         a = 0;
-                    Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(300) + 100, 10, a);
+                    Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(500) + 100, 10, a);
                     p.onStart();
                     l.addPlatform(p);
                 }
@@ -197,16 +182,25 @@ public class GameState extends State {
 
     @Override
     public void render(SpriteBatch sb, ShapeRendererExt sr) {
-
+        sr.setProjectionMatrix(cam.combined);
         box2DDebugRenderer.render(world, cam.combined);
-        /*
         sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(Color.WHITE);
-        sr.rect(player1.getShape());
-        builder.levels.get(player1.getLevel()-1).draw(sr);
-        sr.end();*/
+        player1.drawSR(sr);
+        builder.drawSR(sr);
+        sr.end();
+        sb.begin();
+        player1.drawSB(sb);
+        sb.end();
+        builder.removeDeadEnemies();
+        player1.death();
+
     }
 
+    static void removeBody(Body b){
+        world.destroyBody(b);
+        b.setUserData(null);
+        b=null;
+    }
     @Override
     public void dispose() {
 

@@ -112,4 +112,18 @@ public class LevelBuilder {
             }
         }
     }
+
+    public void removeDeadEnemies() {
+        for(int i=levels.get(currentLvl).enemies.size()-1;i>=0;i--){
+            Enemy e= levels.get(currentLvl).enemies.get(i);
+            if(e.isDead()){
+                GameState.removeBody(e.getBody());
+                levels.get(currentLvl).enemies.remove(i);
+            }
+        }
+    }
+
+    public void drawSR(ShapeRendererExt sr) {
+        //for()
+    }
 }
