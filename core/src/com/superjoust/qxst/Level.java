@@ -11,6 +11,7 @@ public class Level {
     ArrayList<Platform> platforms = new ArrayList<>();
     ArrayList<Spawn> spawners = new ArrayList<>();
     ArrayList<Enemy> enemies = new ArrayList<>();
+    ArrayList<Egg> eggs = new ArrayList<>();
     int levelNum;
 
     public Level(int levelNum, ArrayList<Platform> platforms, ArrayList<Enemy> enemies, ArrayList<Spawn> spawners) {
@@ -36,6 +37,8 @@ public class Level {
     public void addSpawner(Spawn s) {spawners.add(s);}
     public void addPlatform(Platform p) {platforms.add(p);}
     public void addEnemies(Enemy e) {enemies.add(e);}
+    public void addEgg(Egg e) {eggs.add(e);}
+
     public void draw(ShapeRendererExt sr){
         drawList(sr);
     }

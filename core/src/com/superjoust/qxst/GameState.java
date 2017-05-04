@@ -59,6 +59,13 @@ public class GameState extends State {
 
                     }
                 }
+                for (Egg e : builder.levels.get(player1.getLevel() - 1).eggs) {
+
+                    if ((contact.getFixtureA().getBody().equals(player1.getBody()) && contact.getFixtureB().getBody().equals(e.getBody()))
+                            || (contact.getFixtureA().getBody().equals(e.getBody()) && contact.getFixtureB().getBody().equals(player1.getBody()))) {
+                         e.setDead(true);
+                    }
+                }
             }
 
             @Override
@@ -210,15 +217,15 @@ public class GameState extends State {
         }
         sb.end();
         builder.removeDeadEnemies();
+        builder.removeDeadEggs();
         player1.death();
-
+        if(!world.isLocked())
+            builder.spawnEggs();
 
     }
 
     static void removeBody(Body b){
         world.destroyBody(b);
-        b.setUserData(null);
-        b=null;
     }
     @Override
     public void dispose() {

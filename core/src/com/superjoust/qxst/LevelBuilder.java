@@ -3,6 +3,7 @@ package com.superjoust.qxst;
 import java.util.ArrayList;
 
 import static com.superjoust.qxst.EMath.rn;
+import static com.superjoust.qxst.Game.player1;
 
 /**
  * Created by Dago on 5/1/2017.
@@ -110,6 +111,10 @@ public class LevelBuilder {
             for (Enemy e : l.enemies) {
                 e.update(dt);
             }
+            for(Egg e:l.eggs){
+                e.update(dt);
+            }
+
         }
     }
 
@@ -117,13 +122,40 @@ public class LevelBuilder {
         for(int i=levels.get(currentLvl).enemies.size()-1;i>=0;i--){
             Enemy e= levels.get(currentLvl).enemies.get(i);
             if(e.isDead()){
+                Egg egg= new Egg(e.body.getPosition(),e.getBody().getLinearVelocity());
                 GameState.removeBody(e.getBody());
+                e.destroy();
+                egg.onStart();
                 levels.get(currentLvl).enemies.remove(i);
+                levels.get(currentLvl).addEgg(egg);
+
             }
         }
     }
 
     public void drawSR(ShapeRendererExt sr) {
         //for()
+    }
+
+    public void spawnEggs() {
+    }
+
+    public void removeDeadEggs() {
+        for(int i=levels.get(currentLvl).eggs.size()-1;i>=0;i--){
+            Egg e= levels.get(currentLvl).eggs.get(i);
+            if(e.isSpawning()){
+                levels.get(currentLvl).addEnemies(e.spawn());
+                GameState.removeBody(e.getBody());
+                e.destroy();
+                levels.get(currentLvl).eggs.remove(i);
+            }
+            if(e.isDead()){
+                player1.addScore(50);
+                GameState.removeBody(e.getBody());
+                e.destroy();
+                levels.get(currentLvl).eggs.remove(i);
+
+            }
+        }
     }
 }

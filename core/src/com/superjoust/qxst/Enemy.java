@@ -27,13 +27,20 @@ public class Enemy {
     float dtWander=0;
     float wanderMax=rn.nextFloat()+.5f;
     Queue<Command> commands = new LinkedList<>();
+    Vector2 pos=new Vector2(-1,-1);
 
     public Enemy(){
 
     }
+    public Enemy(com.badlogic.gdx.math.Vector2 p){
+        pos.set(p);
+    }
     public void onStart(){
         playerDef.type= BodyDef.BodyType.DynamicBody;
-        playerDef.position.set(WIDTH/2/SCL,HEIGHT/2/SCL);
+        if(pos.x==-1 && pos.y==-1)
+            playerDef.position.set(WIDTH/2/SCL,HEIGHT/2/SCL);
+        else
+            playerDef.position.set(pos.x,pos.y);
         shape=new PolygonShape();
         com.badlogic.gdx.math.Vector2 v=SWORLD(new Vector2(15,15));
         shape.setAsBox(v.x,v.y);
@@ -43,7 +50,7 @@ public class Enemy {
         body = GameState.getWorld().createBody(playerDef);
         body.createFixture(fixtureDef);
         MassData m= new MassData();
-        m.mass=5;
+        m.mass=7;
         body.setMassData(m);
     }
     public void update(float dt){
@@ -111,7 +118,10 @@ public class Enemy {
         }
     };
     public boolean isDead(){return dead;}
-
+    public void destroy(){
+        body.setUserData(null);
+        body=null;
+    }
     public Body getBody() {
         return body;
     }
