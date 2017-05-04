@@ -38,8 +38,8 @@ public class GameState extends State {
         createBox2DWorld();
         createPlatforms();
         player1.onStart();
-        Spawn spawn = new Spawn(100,300,0);
-        spawn.onStart();
+       /* Spawn spawn = new Spawn(100,300,0);
+        spawn.onStart();*/
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
