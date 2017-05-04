@@ -131,6 +131,11 @@ public class GameState extends State {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player1.queueComm(new RightComm());
         }
+        if(Gdx.input.isKeyPressed(Input.Keys.F3)){
+            Enemy e = new Enemy();
+            e.onStart();
+            builder.levels.get(player1.getLevel()-1).enemies.add(e);
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.F2)) {
             if (dtSwap > 1f) {
                 clearWorld();
