@@ -87,7 +87,7 @@ public class LevelBuilder {
                 a = rn.nextInt(360);
             else{
                 a = 0;
-            Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(300) + 100, 10, a);
+            Platform p = new Platform(rn.nextInt((int) Game.WIDTH), rn.nextInt((int) Game.HEIGHT), rn.nextInt(300) + 100, 10, a);
             p.onStart();
             ran.addPlatform(p);
         }

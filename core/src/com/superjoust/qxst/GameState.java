@@ -2,12 +2,15 @@ package com.superjoust.qxst;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.*;
 import com.superjoust.qxst.commands.FlapComm;
 import com.superjoust.qxst.commands.LeftComm;
 import com.superjoust.qxst.commands.RightComm;
+
+import java.util.ConcurrentModificationException;
 
 import static com.superjoust.qxst.EMath.rn;
 import static com.superjoust.qxst.Game.*;
@@ -87,6 +90,7 @@ public class GameState extends State {
     void createPlatforms() {
         builder.build();
         builder.displayLevel(1);
+        new HoverText("1000",3, Color.WHITE,(WIDTH/2),(HEIGHT/2),false);
 
     }
 
@@ -149,7 +153,7 @@ public class GameState extends State {
                         a = rn.nextInt(360);
                     else
                         a = 0;
-                    Platform p = new Platform(rn.nextInt(Game.WIDTH), rn.nextInt(Game.HEIGHT), rn.nextInt(500) + 100, 10, a);
+                    Platform p = new Platform(rn.nextInt((int) Game.WIDTH), rn.nextInt((int) Game.HEIGHT), rn.nextInt(500) + 100, 10, a);
                     p.onStart();
                     l.addPlatform(p);
                 }
@@ -178,6 +182,14 @@ public class GameState extends State {
         builder.update(dt);
         builder.updateTestLvl(dt);
         world.step(dt, 6, 2);
+        try {
+            for (HoverText h : HoverText.texts) {
+                h.updateDT();
+
+            }
+        }catch (ConcurrentModificationException ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -190,9 +202,14 @@ public class GameState extends State {
         sr.end();
         sb.begin();
         player1.drawSB(sb);
+        for (HoverText h:HoverText.texts){
+            h.draw(sb);
+
+        }
         sb.end();
         builder.removeDeadEnemies();
         player1.death();
+
 
     }
 

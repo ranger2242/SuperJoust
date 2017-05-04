@@ -15,7 +15,7 @@ import static com.superjoust.qxst.Game.*;
 public class Enemy {
     int wrapCount=0;
     int wrapMax=rn.nextInt(3)+1;
-    int holdingAlt=HEIGHT/(rn.nextInt(4)+1);;
+    int holdingAlt= (int) (HEIGHT/(rn.nextInt(4)+1));;
 
     boolean dead = false;
 
@@ -65,12 +65,12 @@ public class Enemy {
             wrapMax=rn.nextInt(3)+1;
             if(rn.nextBoolean())
                 speed*=-1;
-            holdingAlt= rn.nextInt(HEIGHT);
+            holdingAlt= rn.nextInt((int) HEIGHT);
             wrapCount=0;
         }
     }
     void maintainAltitude(int alt){
-        int r= HEIGHT/SCL-alt/SCL;
+        int r= (int) (HEIGHT/SCL-alt/SCL);
         if(body.getPosition().y>r)
             flap();
     }

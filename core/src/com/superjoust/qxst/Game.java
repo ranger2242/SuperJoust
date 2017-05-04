@@ -14,13 +14,14 @@ import java.util.ArrayList;
 public class Game extends ApplicationAdapter {
     public static Player player1 = new Player();
     public static Enemy testEnemy = new Enemy();
+
     SpriteBatch batch;
     ShapeRendererExt sr;
     public static int SCL = 50;
     GameStateManager gsm = new GameStateManager();
     public static BitmapFont font;
-    public static int WIDTH = 0;
-    public static int HEIGHT = 0;
+    public static float WIDTH = 0;
+    public static float HEIGHT = 0;
     public static float GRAVITY = .085f;
 
     public static void out(String s) {
