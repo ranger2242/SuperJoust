@@ -15,7 +15,7 @@ public class RightComm extends Command {
 
     @Override
     public void execute() {
-        float f= (float) (2*Math.exp(player1.getRun())-1.8f);
+        float f= (float) (2*Math.exp(player1.getRun())-1.5f);
         if(f>1.5)
             f=1.5f;
        Vector2 vec = new Vector2(f,0);

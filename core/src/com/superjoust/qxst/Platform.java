@@ -22,6 +22,7 @@ public class Platform {
     Vector3 xya=new Vector3();
     Vector2 wh=new Vector2();
     String print="";
+    protected boolean delete=false;
     public Platform(float x, float y, float w, float h, float a){
         Rectangle rect = new Rectangle(x,y,w,h,a);
         setDimm(rect.asPolygon());
@@ -60,5 +61,14 @@ public class Platform {
 
     public Body getBody() {
         return body;
+    }
+
+    public void setDelete() {
+        delete=true;
+    }
+    public boolean isDelete(){return delete;}
+    public void destroy(){
+        body.setUserData(null);
+        body=null;
     }
 }

@@ -1,5 +1,7 @@
 package com.superjoust.qxst;
 
+import com.badlogic.gdx.graphics.Color;
+
 import java.util.ArrayList;
 
 import static com.superjoust.qxst.EMath.rn;
@@ -155,6 +157,33 @@ public class LevelBuilder {
                 e.destroy();
                 levels.get(currentLvl).eggs.remove(i);
 
+            }
+        }
+    }
+
+    public void addPlatform(Platform platform) {
+        levels.get(currentLvl).addPlatform(platform);
+    }
+
+    public void deletePlatform(float x, float y) {
+        for(Platform p: levels.get(currentLvl).platforms){
+            com.badlogic.gdx.math.Vector2 pos=new Vector2(p.xya.x,p.xya.y);
+            if(x>=pos.x-p.wh.x/2 && x<=pos.x+p.wh.x/2 && y<=pos.y+p.wh.y/2 &&y>=pos.y-p.wh.y/2){
+                new HoverText("Clicked",1, Color.WHITE,player1.getPosition().x,player1.getPosition().y,false);
+
+                p.setDelete();
+            }
+        }
+    }
+
+    public void removeDeadPlatforms() {
+        for(int i=levels.get(currentLvl).platforms.size()-1;i>=0;i--){
+            Platform p =levels.get(currentLvl).platforms.get(i);
+            if(p.isDelete()){
+                GameState.removeBody(p.getBody());
+                p.destroy();
+                new HoverText("REMOVED",1, Color.WHITE,player1.getPosition().x,player1.getPosition().y,false);
+                levels.get(currentLvl).platforms.remove(i);
             }
         }
     }

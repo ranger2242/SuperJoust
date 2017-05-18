@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import static com.superjoust.qxst.Game.*;
+import static com.superjoust.qxst.GameState.viewX;
+import static com.superjoust.qxst.GameState.viewY;
 
 /**
  * Created by Dago on 5/1/2017.
@@ -103,45 +105,7 @@ public class Player {
 
         body.setLinearVelocity(vel);
     }
-    void collisionHandler(){
-        /*
-        ArrayList<Line> surfaces = new ArrayList<>();
-        for(Platform p: GameState.builder.levels.get(level-1).platforms){
-            surfaces.addAll(Line.asLines(p.getDimm()));
-        }
-        ArrayList<Line> playerLines=Line.asLines();
-        boolean flip=false;
-        int ind=-1;
-        for(Line l: playerLines){
-            for(Line l2: surfaces) {
-               if(Line.intersectsLine(l,l2)){
-                   flip=true;
-                   ind=surfaces.indexOf(l2);
-               }
-            }
-        }
-        if(flip){
-            Line vel = new Line(new Vector2(0,0),new Vector2(velocity.x,velocity.y));
-            float m1= surfaces.get(ind).getAngle();
-            float m2= vel.getAngle();
-            float ang= (float) Math.toRadians( 180-vel.getAngle());
 
-            float mag= (float) EMath.pathag(vel.a,vel.b);
-            if(dtFlipVelocity>.04) {
-                velocity.set((float) (mag * Math.cos(ang)), (float) (mag * Math.sin(ang)));
-                dtFlipVelocity=0;
-            }
-
-        }
-        */
-    }
-    float thetaMin(float m1, float m2){
-        float a= (float) Math.atan((m1-m2)/(1+m1*m2));
-        float b= (float) Math.atan(-(m1-m2)/(1+m1*m2));
-        if(a>b)
-            return a;
-        else return b;
-    }
     public void update(float dt) {
         dtFlipVelocity += dt;
         for (Command c : commands) {
@@ -149,28 +113,23 @@ public class Player {
         }
 
         //collisionHandler();
-        wrapPlayer();
-        capVelocity(6);
+        //wrapPlayer();
+        capVelocity(7);
         commands.clear();
     }
-    public void addAcceleration(Vector2 acc){
-        accel.add(acc);
-   }
-    public PolygonShape getShape() {
-        return shape;
-    }
-    public void addPosition(Vector2 v) {
-       position.add(v);
-    }
+
     public int getLevel() {
        return level;
     }
     public void addLevel(){
        level++;
     }
-    public Vector2 getPosition() {
-
-        return position;
+    public com.badlogic.gdx.math.Vector2 getPosition() {
+        try {
+            return body.getPosition();
+        }catch (NullPointerException e){
+            return new Vector2();
+        }
     }
     public void addVelocity(Vector2 v){
         velocity.add(v);
@@ -203,6 +162,9 @@ public class Player {
         if(isDead()){
             Game.getFont().draw(sb,"DEAD",Game.WIDTH/2/SCL,Game.HEIGHT/2/SCL);
         }
+        Game.getFont().draw(sb,"vx_"+df.format(viewX),20,120);
+        Game.getFont().draw(sb,"vy_"+df.format(viewY),20,100);
+
         Game.getFont().draw(sb,"Score: "+df1.format(score),20,80);
         Game.getFont().draw(sb,"Lives: "+lives,20,60);
         Game.getFont().draw(sb,"y_"+df.format(body.getPosition().y),20,40);
@@ -246,6 +208,8 @@ public class Player {
     }
 
     public boolean canJump() {
+        if(Math.abs(body.getLinearVelocity().y)==0f)
+            setJumping(false);
        if(!jumping)
            return true;
        else return false;

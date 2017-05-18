@@ -50,6 +50,9 @@ import java.util.ArrayList;
             }
             texts.add(this);
         }
+
+
+
         public void updateDT() {
             dtHov += Gdx.graphics.getDeltaTime();
             if (flash) dtFlash += Gdx.graphics.getDeltaTime();
