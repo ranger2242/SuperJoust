@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.superjoust.qxst.commands.Command;
+import com.superjoust.qxst.commands.FlapComm;
 
 import java.text.DecimalFormat;
 import java.util.LinkedList;
@@ -25,7 +26,9 @@ public class Player {
     protected Vector2 accel=new Vector2(0,0);
     protected PolygonShape shape;
     protected long score=0;
+    protected boolean jumping=false;
     protected int width = 30;
+    protected float dtRun =0;
 
     Body body =null;
     BodyDef playerDef=new BodyDef();
@@ -45,12 +48,13 @@ public class Player {
         com.badlogic.gdx.math.Vector2 v=SWORLD(new Vector2(15,15));
         shape.setAsBox(v.x,v.y);
         fixtureDef.shape= shape;
-        fixtureDef.friction=0;
-        fixtureDef.restitution=.3f;
+        fixtureDef.friction=.2f;
+        fixtureDef.restitution=0f;
         body = GameState.getWorld().createBody(playerDef);
         body.createFixture(fixtureDef);
         MassData m= new MassData();
-        m.mass=5;
+        m.mass=3
+        ;
         body.setMassData(m);
         changePos(new Vector2(300,300));
 
@@ -146,7 +150,7 @@ public class Player {
 
         //collisionHandler();
         wrapPlayer();
-        //capVelocity(100);
+        capVelocity(6);
         commands.clear();
     }
     public void addAcceleration(Vector2 acc){
@@ -219,6 +223,37 @@ public class Player {
             body.setTransform(new Vector2(Game.WIDTH/2/SCL, 0), 0);
             dead=false;
         }
+    }
+
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
+    }
+
+    public boolean isJumping() {
+        return jumping;
+    }
+
+    public void addRun(float deltaTime) {
+        dtRun+=deltaTime;
+    }
+
+    public void clearRun() {
+        dtRun=0;
+    }
+
+    public float getRun() {
+        return dtRun;
+    }
+
+    public boolean canJump() {
+       if(!jumping)
+           return true;
+       else return false;
+    }
+
+    public void jump() {
+        setJumping(true);
+        queueComm(new FlapComm());
     }
 }
 

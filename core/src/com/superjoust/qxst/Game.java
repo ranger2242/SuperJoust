@@ -22,7 +22,7 @@ public class Game extends ApplicationAdapter {
     public static BitmapFont font;
     public static float WIDTH = 0;
     public static float HEIGHT = 0;
-    public static float GRAVITY = .085f;
+    public static float GRAVITY = 9f;
 
     public static void out(String s) {
         System.out.println(s);
@@ -31,7 +31,7 @@ public class Game extends ApplicationAdapter {
     @Override
     public void create() {
         font = new BitmapFont();
-        Gdx.graphics.setWindowedMode(1000,800);
+        Gdx.graphics.setWindowedMode(1000,500);
         WIDTH = Gdx.graphics.getWidth();
         HEIGHT = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
@@ -93,8 +93,8 @@ public class Game extends ApplicationAdapter {
                 }else count++;
             }
             for(int j=0;j<count;j++){
-				for(int i=0;i<5;i++)
-				levels.get(j).enemies.add(new Enemy());
+				for(int i=0;i<5;i++){}
+				//levels.get(j).enemies.add(new Enemy());
 			}
             return levels;
         } catch (IOException e) {

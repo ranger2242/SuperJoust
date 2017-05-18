@@ -39,7 +39,7 @@ public class Platform {
         MassData m= new MassData();
         m.mass=5;
 
-        fixtureDef.friction=.3f;
+        fixtureDef.friction=.8f;
         body = GameState.getWorld().createBody(playerDef);
         body.createFixture(fixtureDef);
         body.setTransform(xya.x/SCL,xya.y/SCL,xya.z/SCL);

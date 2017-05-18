@@ -16,8 +16,10 @@ public class LeftComm extends Command {
 
     @Override
     public void execute() {
-        Vector2 left = new Vector2(-1,0);
-
+        float f= (float) (2*Math.exp(player1.getRun())-1.8f);
+        if(f>1.5)
+            f=1.5f;
+        Vector2 left = new Vector2(-f,0);
         player1.move(Game.SPIXEL(left));
     }
 }

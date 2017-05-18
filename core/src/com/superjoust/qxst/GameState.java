@@ -21,6 +21,7 @@ import static com.superjoust.qxst.Game.*;
 public class GameState extends State {
     float dtSwap = 0;
     float dtPrint = 0;
+    float dtJump = 0;
     static LevelBuilder builder = new LevelBuilder();
 
     static World world;
@@ -43,6 +44,13 @@ public class GameState extends State {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
+                for (Platform p : builder.levels.get(player1.getLevel() - 1).platforms) {
+
+                    if ((contact.getFixtureA().getBody().equals(player1.getBody()) && contact.getFixtureB().getBody().equals(p.getBody()))
+                            || (contact.getFixtureA().getBody().equals(p.getBody()) && contact.getFixtureB().getBody().equals(player1.getBody()))) {
+                        player1.setJumping(false);
+                    }
+                }
                 for (Enemy e : builder.levels.get(player1.getLevel() - 1).enemies) {
 
                     if ((contact.getFixtureA().getBody().equals(player1.getBody()) && contact.getFixtureB().getBody().equals(e.getBody()))
@@ -89,7 +97,7 @@ public class GameState extends State {
 
     void createBox2DWorld() {
         box2DDebugRenderer = new Box2DDebugRenderer();
-        world = new World(new Vector2(0, 9.8f), true);
+        world = new World(new Vector2(0, 18f), true);
     }
 
 
@@ -130,13 +138,19 @@ public class GameState extends State {
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            player1.queueComm(new FlapComm());
+            if(player1.canJump())
+                player1.jump();
+        }else if(!player1.isJumping()){
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && dtJump >.1f) {
+            player1.addRun(Gdx.graphics.getDeltaTime());
             player1.queueComm(new LeftComm());
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        else if (Gdx.input.isKeyPressed(Input.Keys.D)&& dtJump >.08f) {
+            player1.addRun(Gdx.graphics.getDeltaTime());
             player1.queueComm(new RightComm());
+        }else{
+            player1.clearRun();
         }
         if(Gdx.input.isKeyPressed(Input.Keys.F3)){
             Enemy e = new Enemy();
@@ -189,6 +203,7 @@ public class GameState extends State {
         player1.update(dt);
         dtSwap += dt;
         dtPrint += dt;
+        dtJump+=dt;
         builder.update(dt);
         builder.updateTestLvl(dt);
         world.step(dt, 6, 2);
