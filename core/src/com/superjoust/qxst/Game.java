@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class Game extends ApplicationAdapter {
     public static Player player1 = new Player();
-    public static Enemy testEnemy = new Enemy();
 
     SpriteBatch batch;
     ShapeRendererExt sr;
@@ -22,7 +21,6 @@ public class Game extends ApplicationAdapter {
     public static BitmapFont font;
     public static float WIDTH = 0;
     public static float HEIGHT = 0;
-    public static float GRAVITY = 9f;
 
     public static void out(String s) {
         System.out.println(s);
@@ -31,7 +29,7 @@ public class Game extends ApplicationAdapter {
     @Override
     public void create() {
         font = new BitmapFont();
-        Gdx.graphics.setWindowedMode(1000,500);
+        Gdx.graphics.setWindowedMode(1280,720);
         WIDTH = Gdx.graphics.getWidth();
         HEIGHT = Gdx.graphics.getHeight();
         batch = new SpriteBatch();

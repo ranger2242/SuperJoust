@@ -105,7 +105,6 @@ public class Player {
 
         body.setLinearVelocity(vel);
     }
-
     public void update(float dt) {
         dtFlipVelocity += dt;
         for (Command c : commands) {
@@ -117,7 +116,6 @@ public class Player {
         capVelocity(7);
         commands.clear();
     }
-
     public int getLevel() {
        return level;
     }
@@ -141,11 +139,9 @@ public class Player {
         sr.setColor(Color.YELLOW);
         sr.rect((body.getPosition().x),(body.getPosition().y),.1f,.1f);
     }
-
     public long getScore() {
         return score;
     }
-
     public void setScore(long score) {
         this.score = score;
     }
@@ -154,7 +150,6 @@ public class Player {
         new HoverText(""+sc,1, Color.WHITE,getScrCorrd().x,getScrCorrd().y,false);
 
     }
-
     public void drawSB(SpriteBatch sb){
         DecimalFormat df = new DecimalFormat(".##");
         DecimalFormat df1 = new DecimalFormat("0000000000");
@@ -186,27 +181,21 @@ public class Player {
             dead=false;
         }
     }
-
     public void setJumping(boolean jumping) {
         this.jumping = jumping;
     }
-
     public boolean isJumping() {
         return jumping;
     }
-
     public void addRun(float deltaTime) {
         dtRun+=deltaTime;
     }
-
     public void clearRun() {
         dtRun=0;
     }
-
     public float getRun() {
         return dtRun;
     }
-
     public boolean canJump() {
         if(Math.abs(body.getLinearVelocity().y)==0f)
             setJumping(false);
@@ -214,10 +203,9 @@ public class Player {
            return true;
        else return false;
     }
-
-    public void jump() {
+    public void jump(float dt,float dtmax) {
         setJumping(true);
-        queueComm(new FlapComm());
+        queueComm(new FlapComm(dt,dtmax));
     }
 }
 

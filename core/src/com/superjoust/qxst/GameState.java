@@ -26,6 +26,7 @@ public class GameState extends State {
     float dtSwap = 0;
     float dtPrint = 0;
     float dtJump = 0;
+    float dtJumpHold=0;
     static LevelBuilder builder = new LevelBuilder();
 
     static World world;
@@ -178,10 +179,19 @@ public class GameState extends State {
                 dtPrint = 0;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)&&dtJump >.016f) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)&&dtJump >.033f && dtJumpHold<.005) {
+            dtJumpHold+=Gdx.graphics.getDeltaTime();
             if(player1.canJump())
-                player1.jump();
+                player1.jump(dtJumpHold,.02f);
             dtJump=0;
+        }else if(Gdx.input.isKeyPressed(Input.Keys.SPACE)&&dtJump >.033f && (dtJumpHold>.005)){
+            dtJumpHold+=Gdx.graphics.getDeltaTime();
+            if(player1.canJump())
+                player1.jump(dtJumpHold,.01f);
+            dtJump=0;
+        }
+        else{
+            dtJumpHold=0;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player1.addRun(Gdx.graphics.getDeltaTime());
