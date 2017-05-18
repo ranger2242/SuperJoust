@@ -37,12 +37,48 @@ public class Player {
     FixtureDef fixtureDef = new FixtureDef();
 
     Queue<Command> commands = new LinkedList<>();
-
+    com.badlogic.gdx.math.Vector2 savedPos=new Vector2(0,0);
     public Player(){
        // onStart();
 
     }
 
+
+    public com.badlogic.gdx.math.Vector2 getPosition() {
+        try {
+            return body.getPosition();
+        }catch (NullPointerException e){
+            return new Vector2();
+        }
+    }
+    public Body getBody() {
+        return body;
+    }
+    public Vector2 getScrCorrd(){
+        return new Vector2(body.getPosition().x*SCL,HEIGHT-body.getPosition().y*SCL);
+    }
+    public boolean isJumping() {
+        return jumping;
+    }
+    public boolean canJump() {
+        if(Math.abs(body.getLinearVelocity().y)==0f)
+            setJumping(false);
+        if(!jumping)
+            return true;
+        else return false;
+    }
+    public boolean isDead(){
+        return dead;
+    }
+    public float getRun() {
+        return dtRun;
+    }
+    public long getScore() {
+        return score;
+    }
+    public int getLevel() {
+        return level;
+    }
     public void onStart(){
         playerDef.type=BodyDef.BodyType.DynamicBody;
         playerDef.position.set(getPosition());
@@ -70,7 +106,7 @@ public class Player {
         commands.add(c);
     }
     public void changePos(Vector2 v){
-       position.set(v);
+        position.set(v);
     }
     public void move(Vector2 vector2){
         body.applyForceToCenter(vector2,true);
@@ -101,9 +137,15 @@ public class Player {
 
         if(vel.x>max) vel.x=max;
         if(vel.x<-max) vel.x=-max;
-       // if(vel.y<(float)-(max)*3/4) vel.y=(float) (-max)*3/4;
+        // if(vel.y<(float)-(max)*3/4) vel.y=(float) (-max)*3/4;
 
         body.setLinearVelocity(vel);
+    }
+    public void resetPos(){
+        body.setTransform(savedPos,0);
+    }
+    public void setSavedPos(com.badlogic.gdx.math.Vector2 v){
+        savedPos=new Vector2(v.x,v.y);
     }
     public void update(float dt) {
         dtFlipVelocity += dt;
@@ -116,31 +158,15 @@ public class Player {
         capVelocity(7);
         commands.clear();
     }
-    public int getLevel() {
-       return level;
-    }
     public void addLevel(){
-       level++;
-    }
-    public com.badlogic.gdx.math.Vector2 getPosition() {
-        try {
-            return body.getPosition();
-        }catch (NullPointerException e){
-            return new Vector2();
-        }
+        level++;
     }
     public void addVelocity(Vector2 v){
         velocity.add(v);
     }
-    public Body getBody() {
-        return body;
-    }
     public void drawSR(ShapeRendererExt sr){
         sr.setColor(Color.YELLOW);
         sr.rect((body.getPosition().x),(body.getPosition().y),.1f,.1f);
-    }
-    public long getScore() {
-        return score;
     }
     public void setScore(long score) {
         this.score = score;
@@ -165,14 +191,8 @@ public class Player {
         Game.getFont().draw(sb,"y_"+df.format(body.getPosition().y),20,40);
         Game.getFont().draw(sb,"x_"+df.format(body.getPosition().x),20,20);
     }
-    public Vector2 getScrCorrd(){
-        return new Vector2(body.getPosition().x*SCL,HEIGHT-body.getPosition().y*SCL);
-    }
     public void setDead(boolean b){
         dead=b;
-    }
-    public boolean isDead(){
-        return dead;
     }
     public void death() {
         if(isDead()) {
@@ -184,28 +204,16 @@ public class Player {
     public void setJumping(boolean jumping) {
         this.jumping = jumping;
     }
-    public boolean isJumping() {
-        return jumping;
-    }
     public void addRun(float deltaTime) {
         dtRun+=deltaTime;
     }
     public void clearRun() {
         dtRun=0;
     }
-    public float getRun() {
-        return dtRun;
-    }
-    public boolean canJump() {
-        if(Math.abs(body.getLinearVelocity().y)==0f)
-            setJumping(false);
-       if(!jumping)
-           return true;
-       else return false;
-    }
     public void jump(float dt,float dtmax) {
         setJumping(true);
         queueComm(new FlapComm(dt,dtmax));
     }
+
 }
 

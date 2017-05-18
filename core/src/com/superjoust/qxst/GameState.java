@@ -75,12 +75,12 @@ public class GameState extends State {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                for (Platform p : builder.levels.get(player1.getLevel() - 1).platforms) {
+                /*for (Platform p : builder.levels.get(player1.getLevel() - 1).platforms) {
 
                     if ((contact.getFixtureA().getBody().equals(player1.getBody()) && contact.getFixtureB().getBody().equals(p.getBody()))
                             || (contact.getFixtureA().getBody().equals(p.getBody()) && contact.getFixtureB().getBody().equals(player1.getBody()))) {
                     }
-                }
+                }*/
                 for (Enemy e : builder.levels.get(player1.getLevel() - 1).enemies) {
 
                     if ((contact.getFixtureA().getBody().equals(player1.getBody()) && contact.getFixtureB().getBody().equals(e.getBody()))
@@ -172,6 +172,9 @@ public class GameState extends State {
 
     @Override
     public void handleInput() {
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            player1.resetPos();
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
             if (dtPrint > 1f) {
                 builder.levels.get(builder.currentLvl).print();
@@ -179,34 +182,32 @@ public class GameState extends State {
                 dtPrint = 0;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)&&dtJump >.033f && dtJumpHold<.005) {
-            dtJumpHold+=Gdx.graphics.getDeltaTime();
-            if(player1.canJump())
-                player1.jump(dtJumpHold,.02f);
-            dtJump=0;
-        }else if(Gdx.input.isKeyPressed(Input.Keys.SPACE)&&dtJump >.033f && (dtJumpHold>.005)){
-            dtJumpHold+=Gdx.graphics.getDeltaTime();
-            if(player1.canJump())
-                player1.jump(dtJumpHold,.01f);
-            dtJump=0;
-        }
-        else{
-            dtJumpHold=0;
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && dtJump > .033f && dtJumpHold < .005) {
+            dtJumpHold += Gdx.graphics.getDeltaTime();
+            if (player1.canJump())
+                player1.jump(dtJumpHold, .018f);
+            dtJump = 0;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && dtJump > .033f && (dtJumpHold > .005)) {
+            dtJumpHold += Gdx.graphics.getDeltaTime();
+            if (player1.canJump())
+                player1.jump(dtJumpHold, .005f);
+            dtJump = 0;
+        } else {
+            dtJumpHold = 0;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player1.addRun(Gdx.graphics.getDeltaTime());
             player1.queueComm(new LeftComm());
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player1.addRun(Gdx.graphics.getDeltaTime());
             player1.queueComm(new RightComm());
-        }else{
+        } else {
             player1.clearRun();
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.F3)){
+        if (Gdx.input.isKeyPressed(Input.Keys.F3)) {
             Enemy e = new Enemy();
             e.onStart();
-            builder.levels.get(player1.getLevel()-1).enemies.add(e);
+            builder.levels.get(player1.getLevel() - 1).enemies.add(e);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F2)) {
             if (dtSwap > 1f) {
@@ -222,7 +223,7 @@ public class GameState extends State {
                 clearWorld();
                 player1.addLevel();
                 Level l = new Level();
-                for (int i = 0; i <10; i++) {
+                for (int i = 0; i < 10; i++) {
                     int a = 0;
                     if (rn.nextBoolean())
                         a = rn.nextInt(360);
@@ -246,8 +247,11 @@ public class GameState extends State {
                 dtSwap = 0;
             }
         }
-    }
+            if (Gdx.input.isKeyPressed(Input.Keys.F4)) {
+                player1.setSavedPos(player1.getPosition());
+            }
 
+    }
     @Override
     public void update(float dt) {
         handleInput();
